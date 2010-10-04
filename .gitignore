@@ -3,3 +3,5 @@
 /*.bundle
 /*.o
 /.bundle/
+/pkg
+oily_png-*.gem

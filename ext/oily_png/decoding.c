@@ -3,7 +3,7 @@
 // Variable for the OilyPNG module
 VALUE OilyPNG = Qnil;
 
-void Init_oily_png();
+void Init_decoding();
 
 VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALUE height, VALUE color_mode, VALUE start_pos);
 
@@ -26,7 +26,7 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
 // FILTER_AVERAGE        = 3
 // FILTER_PAETH          = 4
 
-void Init_oily_png() {
+void Init_decoding() {
   VALUE OilyPNG = rb_define_module("OilyPNG");
   VALUE OilyPNGDecoding = rb_define_module_under(OilyPNG, "PNGDecoding");
   rb_define_method(OilyPNGDecoding, "decode_png_image_pass", oily_png_decode_png_image_pass, 5);
