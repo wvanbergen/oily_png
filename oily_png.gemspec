@@ -30,6 +30,6 @@ Gem::Specification.new do |s|
 
   # Do not change the files and test_files fields by hand. This will be done
   # automatically by the gem release script.
-  s.files      = %w(.gitignore Gemfile Gemfile.lock LICENSE README.rdoc Rakefile ext/oily_png/Makefile ext/oily_png/decoding.c ext/oily_png/extconf.rb lib/oily_png.rb oily_png.gemspec tasks/github-gem.rake test.png)
+  s.files      = %w(.gitignore Gemfile Gemfile.lock LICENSE README.rdoc Rakefile ext/oily_png/decoding.c ext/oily_png/extconf.rb lib/oily_png.rb oily_png.gemspec tasks/github-gem.rake)
   s.test_files = %w()
 end

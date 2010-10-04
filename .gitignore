@@ -1,4 +1,4 @@
-/Makefile
+Makefile
 /conftest.dSYM
 /*.bundle
 /*.o
