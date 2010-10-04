@@ -8,4 +8,4 @@ require 'mkmf'
 # exit(1) unless find_library('png', 'png_get_io_ptr', *lib_paths) && find_header('png.h', *inc_paths)
 
 # Create a makefile
-create_makefile('oily_png/oily_png')
+create_makefile('oily_png/decoding')
