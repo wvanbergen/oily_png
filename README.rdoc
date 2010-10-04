@@ -1,3 +1,9 @@
 === OilyPNG
 
-Native module to speed up ChunkyPNG
+Native module to speed up ChunkyPNG. 
+
+* Install this gem 
+* Use require "oily_png" instead of require"chunky_png"
+* Use the ChunkyPNG API as you normally would.
+* Presto!
+
