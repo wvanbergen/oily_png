@@ -1,0 +1,3 @@
+=== OilyPNG
+
+Native module to speed up ChunkyPNG

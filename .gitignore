@@ -1,4 +1,5 @@
-Makefile
-conftest.dSYM
-oily_png.bundle
-oily_png.o
+/Makefile
+/conftest.dSYM
+/*.bundle
+/*.o
+/.bundle/
