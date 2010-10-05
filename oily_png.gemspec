@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib", "ext"]
 
   s.required_rubygems_version = '1.3.7'
-  s.add_runtime_dependency('chunky_png', '~> 0.10.1')
+  s.add_runtime_dependency('chunky_png', '~> 0.10.2')
 
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec', '>= 1.3')
