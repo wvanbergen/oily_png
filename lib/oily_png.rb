@@ -3,7 +3,7 @@ require 'oily_png/png_decoding'
 
 module OilyPNG
   
-  VERSION = "0.0.2"
+  VERSION = "0.0.3"
 
   def self.included(base)
     base::Canvas.extend OilyPNG::PNGDecoding
