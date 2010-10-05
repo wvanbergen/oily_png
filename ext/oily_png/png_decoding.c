@@ -1,45 +1,6 @@
-#include "ruby.h"
-
-// PNG color mode constants
-#define OILY_PNG_COLOR_GRAYSCALE        0
-#define OILY_PNG_COLOR_TRUECOLOR        2
-#define OILY_PNG_COLOR_INDEXED          3
-#define OILY_PNG_COLOR_GRAYSCALE_ALPHA  4
-#define OILY_PNG_COLOR_TRUECOLOR_ALPHA  6
-
-// PNG filter constants
-#define OILY_PNG_FILTER_NONE    0
-#define OILY_PNG_FILTER_SUB     1
-#define OILY_PNG_FILTER_UP      2
-#define OILY_PNG_FILTER_AVERAGE 3
-#define OILY_PNG_FILTER_PAETH   4
-
-// Type definitions
-#define PIXEL unsigned int
-
-void Init_png_decoding();
-VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALUE height, VALUE color_mode, VALUE start_pos);
+#include "oily_png_ext.h"
 
 ////////////////////////////////////////////////////////////////////////////
-
-// Initialize the extension by creating the OilyPNG::PNGDecoding module
-void Init_png_decoding() {
-  VALUE OilyPNG = rb_define_module("OilyPNG");
-  VALUE OilyPNGPNGDecoding = rb_define_module_under(OilyPNG, "PNGDecoding");
-  rb_define_method(OilyPNGPNGDecoding, "decode_png_image_pass", oily_png_decode_png_image_pass, 5);
-}
-
-// Returns the number of bytes per pixel for a given color mode.
-int oily_png_pixel_size(color_mode) {
-  switch (color_mode) {
-    case OILY_PNG_COLOR_GRAYSCALE:       return 1;
-    case OILY_PNG_COLOR_TRUECOLOR:       return 3;
-    case OILY_PNG_COLOR_INDEXED:         return 1;
-    case OILY_PNG_COLOR_GRAYSCALE_ALPHA: return 2;
-    case OILY_PNG_COLOR_TRUECOLOR_ALPHA: return 4;
-    default: return -1;
-  }
-}
 
 // Decodes a pixel at the given position in the bytearray
 PIXEL oily_png_decode_pixel(int color_mode, unsigned char* bytes, int byte_index, VALUE decoding_palette) {
