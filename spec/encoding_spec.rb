@@ -3,7 +3,7 @@ require 'spec_helper'
 describe OilyPNG::PNGEncoding do
 
   context 'encoding different color modes' do
-    before do 
+    before do
       @canvas      = ChunkyPNG::Canvas.from_file(resource_file('gray.png'))
       @oily_canvas = OilyCanvas.from_canvas(@canvas)
     end
@@ -78,6 +78,14 @@ describe OilyPNG::PNGEncoding do
       @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = "", ChunkyPNG::COLOR_TRUECOLOR, ChunkyPNG::FILTER_PAETH)
       @canvas.send(:encode_png_image_pass_to_stream,      stream2 = "", ChunkyPNG::COLOR_TRUECOLOR, ChunkyPNG::FILTER_PAETH)
       stream1.should == stream2
-    end    
+    end
+  end
+  
+  it "should encode an interlaced image correctly" do
+    canvas = ChunkyPNG::Canvas.from_file(resource_file('interlaced.png'))
+    data = OilyCanvas.from_canvas(canvas).to_blob(:interlace => true)
+    ds = ChunkyPNG::Datastream.from_blob(data)
+    ds.header_chunk.interlace.should == ChunkyPNG::INTERLACING_ADAM7
+    ChunkyPNG::Canvas.from_datastream(ds).should == canvas
   end
 end

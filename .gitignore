@@ -6,3 +6,4 @@ Makefile
 /pkg
 oily_png-*.gem
 .DS_Store
+/spec/resources/_*.*

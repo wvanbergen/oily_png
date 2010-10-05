@@ -12,6 +12,12 @@ describe OilyPNG::PNGDecoding do
     OilyCanvas.from_file(resource_file('operations.png'))
   end
   
+  it "should decode an interlaced image correctly" do
+    c1 = OilyCanvas.from_file(resource_file('interlaced.png'))
+    c2 = ChunkyPNG::Canvas.from_file(resource_file('interlaced.png'))
+    c2.should == c1
+  end
+  
   context 'decoding different filtering methods' do
     before(:all) { @reference = ChunkyPNG::Canvas.from_file(resource_file('operations.png'))}
     
