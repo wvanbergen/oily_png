@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe OilyPNG::PNGDecoding do
 
-  it "should not call Color.bytesize in the native version" do
-    ChunkyPNG::Color.should_not_receive(:bytesize)
-    OilyCanvas.from_file(resource_file('operations.png'))
-  end
-  
   it "should call Color.bytesize in the pure ruby version" do
     ChunkyPNG::Color.should_receive(:bytesize).and_return(3)
     ChunkyPNG::Canvas.from_file(resource_file('operations.png'))
+  end
+
+  it "should not call Color.bytesize in the native version" do
+    ChunkyPNG::Color.should_not_receive(:bytesize)
+    OilyCanvas.from_file(resource_file('operations.png'))
   end
   
   context 'decoding different filtering methods' do
