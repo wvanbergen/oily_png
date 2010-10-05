@@ -1,7 +1,8 @@
 Makefile
 /conftest.dSYM
-/*.bundle
-/*.o
+*.bundle
+*.o
 /.bundle/
 /pkg
 oily_png-*.gem
+.DS_Store
