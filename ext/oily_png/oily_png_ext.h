@@ -18,12 +18,13 @@
 #define OILY_PNG_FILTER_PAETH   4
 
 // Type definitions
-#define PIXEL unsigned int
+#define PIXEL unsigned int  // Pixels use 32 bits unsigned integers
+#define BYTE  unsigned char // Bytes use 8 bits unsigned integers
 
 #include "png_decoding.h"
 #include "png_encoding.h"
 
 void Init_oily_png_ext();
-int oily_png_pixel_size(color_mode);
+int oily_png_pixel_size(int color_mode);
 
 #endif

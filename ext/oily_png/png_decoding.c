@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 // Decodes a pixel at the given position in the bytearray
-PIXEL oily_png_decode_pixel(int color_mode, unsigned char* bytes, int byte_index, VALUE decoding_palette) {
+PIXEL oily_png_decode_pixel(int color_mode, BYTE* bytes, int byte_index, VALUE decoding_palette) {
   switch (color_mode) {
     case OILY_PNG_COLOR_GRAYSCALE:
       return (bytes[byte_index] << 24) + (bytes[byte_index] << 16) + (bytes[byte_index] << 8) + 0xff;
@@ -21,7 +21,7 @@ PIXEL oily_png_decode_pixel(int color_mode, unsigned char* bytes, int byte_index
 }
 
 // Decodes a SUB filtered scanline at the given position in the byte array
-void oily_png_decode_filter_sub(unsigned char* bytes, int pos, int line_length, int pixel_size) {
+void oily_png_decode_filter_sub(BYTE* bytes, int pos, int line_length, int pixel_size) {
   int i;
   for (i = 1 + pixel_size; i < line_length; i++) {
     bytes[pos + i] += bytes[pos + i - pixel_size]; // mod 256 ???
@@ -29,7 +29,7 @@ void oily_png_decode_filter_sub(unsigned char* bytes, int pos, int line_length, 
 }
 
 // Decodes an UP filtered scanline at the given position in the byte array
-void oily_png_decode_filter_up(unsigned char* bytes, int pos, int line_length, int pixel_size) {
+void oily_png_decode_filter_up(BYTE* bytes, int pos, int line_length, int pixel_size) {
   int i;
   // The first line is not filtered because there is no privous line
   if (pos >= line_length) {
@@ -40,9 +40,9 @@ void oily_png_decode_filter_up(unsigned char* bytes, int pos, int line_length, i
 }
 
 // Decodes an AVERAGE filtered scanline at the given position in the byte array
-void oily_png_decode_filter_average(unsigned char* bytes, int pos, int line_length, int pixel_size) {
+void oily_png_decode_filter_average(BYTE* bytes, int pos, int line_length, int pixel_size) {
   int i;
-  unsigned char a, b;
+  BYTE a, b;
   for (i = 1; i < line_length; i++) {
     a = (i > pixel_size)     ? bytes[pos + i - pixel_size]  : 0;
     b = (pos >= line_length) ? bytes[pos + i - line_length] : 0;
@@ -51,8 +51,8 @@ void oily_png_decode_filter_average(unsigned char* bytes, int pos, int line_leng
 }
 
 // Decodes a PAETH filtered scanline at the given position in the byte array
-void oily_png_decode_filter_paeth(unsigned char* bytes, int pos, int line_length, int pixel_size) {
-  unsigned char a, b, c, pr;
+void oily_png_decode_filter_paeth(BYTE* bytes, int pos, int line_length, int pixel_size) {
+  BYTE a, b, c, pr;
   int i, p, pa, pb, pc;
   for (i = 1; i < line_length; i++) {
     a = (i > pixel_size) ? bytes[pos + i - pixel_size]  : 0;
@@ -67,9 +67,11 @@ void oily_png_decode_filter_paeth(unsigned char* bytes, int pos, int line_length
   }
 }
 
-// Decodes an image pass from the given byte stream at the given position.
-// A normal PNG will only have one pass that consumes the entire stream, while an
-// interlaced image requires 7 passes which are loaded from different starting positions.
+/*
+  Decodes an image pass from the given byte stream at the given position.
+  A normal PNG will only have one pass that consumes the entire stream, while an
+  interlaced image requires 7 passes which are loaded from different starting positions.
+*/
 VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALUE height, VALUE color_mode, VALUE start_pos) {
   
   int pixel_size = oily_png_pixel_size(FIX2INT(color_mode));
@@ -78,19 +80,24 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
   
   VALUE pixels = rb_ary_new();
   
+  if (RSTRING_LEN(stream) < pass_size + FIX2INT(start_pos)) {
+    exit(1);
+  }
+
+  // Copy the bytes for this pass from the stream to a separate location
+  // so we can work on this byte array directly.
+  BYTE* pixelstream = (BYTE*) RSTRING_PTR(stream);
+  BYTE* bytes = ALLOCA_N(BYTE, pass_size);
+  memcpy(bytes, pixelstream + FIX2INT(start_pos), pass_size);
+
+  // Get the decoding palette for indexed images.
   VALUE decoding_palette = Qnil;
   if (FIX2INT(color_mode) == OILY_PNG_COLOR_INDEXED) {
     decoding_palette = rb_funcall(self, rb_intern("decoding_palette"), 0);
   }
-  
-  // Copy the bytes for this pass from the stream to a separate location
-  // so we can work on this byte array directly.
-  unsigned char* pixelstream = RSTRING_PTR(stream);
-  unsigned char* bytes = malloc(pass_size);
-  memcpy(bytes, pixelstream + FIX2INT(start_pos), pass_size);
 
   int y, x, line_start, prev_line_start, byte_index, pixel_index;
-  unsigned char filter;
+  BYTE filter;
   PIXEL pixel;
   
   for (y = 0; y < FIX2INT(height); y++) {
@@ -117,9 +124,6 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
       rb_ary_store(pixels, pixel_index, INT2NUM(pixel));
     }
   }
-  
-  // Get rid of the byte array.
-  free(bytes);
   
   // Now, return a new ChunkyPNG::Canvas instance with the decoded pixels.
   return rb_funcall(self, rb_intern("new"), 3, width, height, pixels);
