@@ -1,5 +1,5 @@
 require 'chunky_png'
-require 'oily_png/decoding'
+require 'oily_png/png_decoding'
 
 module OilyPNG
   

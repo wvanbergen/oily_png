@@ -5,12 +5,11 @@ Bundler.setup
 
 require 'spec'
 require 'chunky_png'
-require 'oily_png/decoding'
+require 'oily_png/png_decoding'
 
 class OilyCanvas < ChunkyPNG::Canvas
   extend OilyPNG::PNGDecoding
 end
-
 
 module ResourceHelper
   def resource_files

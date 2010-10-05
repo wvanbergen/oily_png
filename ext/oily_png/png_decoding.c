@@ -17,16 +17,16 @@
 // Type definitions
 #define PIXEL unsigned int
 
-void Init_decoding();
+void Init_png_decoding();
 VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALUE height, VALUE color_mode, VALUE start_pos);
 
 ////////////////////////////////////////////////////////////////////////////
 
 // Initialize the extension by creating the OilyPNG::PNGDecoding module
-void Init_decoding() {
+void Init_png_decoding() {
   VALUE OilyPNG = rb_define_module("OilyPNG");
-  VALUE OilyPNGDecoding = rb_define_module_under(OilyPNG, "PNGDecoding");
-  rb_define_method(OilyPNGDecoding, "decode_png_image_pass", oily_png_decode_png_image_pass, 5);
+  VALUE OilyPNGPNGDecoding = rb_define_module_under(OilyPNG, "PNGDecoding");
+  rb_define_method(OilyPNGPNGDecoding, "decode_png_image_pass", oily_png_decode_png_image_pass, 5);
 }
 
 // Returns the number of bytes per pixel for a given color mode.
