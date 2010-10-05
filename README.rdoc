@@ -1,11 +1,9 @@
 = OilyPNG
 
 OilyPNG is a Ruby C extension to speed up the pure Ruby ChunkyPNG library. It is a standalone
-module, so it does not require LibPNG, ImageMagick or any other library.
-
-Currently it has an alternative implementation of decoding PNGs, making that operation much 
-faster for PNG images that apply filtering. An alternative implementation for encoding is
-planned.
+module, so it does not require LibPNG, ImageMagick or any other library. Currently it has an 
+alternative implementation of decoding and encoding PNGs, making these operations much 
+faster for PNG images that apply filtering.
 
 *Warning*: this is my first C code in years. It may blow up your PC after leaking memory all
 over the place, killing a kitten in the process. You have been warned.
