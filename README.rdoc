@@ -1,9 +1,26 @@
-=== OilyPNG
+= OilyPNG
 
-Native module to speed up ChunkyPNG. 
+OilyPNG is a Ruby C extension to speed up the pure Ruby ChunkyPNG library. 
 
-* Install this gem 
-* Use require "oily_png" instead of require"chunky_png"
-* Use the ChunkyPNG API as you normally would.
-* Presto!
+Currently it has an alternative implementation of decoding PNGs, making that operation much 
+faster for PNG images that apply filtering. An alternative implementation for encoding is
+planned.
+
+*Warning*: this is my first C code in years. It may blow up your PC after leaking memory all
+over the place, killing a kitten in the process. You have been warned.
+
+== Usage
+
+1. First install the gem and make it available to your project.
+2. Use require "oily_png" instead of require "chunky_png"
+3. Presto! Now use ChunkyPNG as you normally would and get an instant speedup. 
+
+See http://github.com/wvanbergen/chunky_png/wiki for more information on how to use the
+ChunkyPNG API.
+
+== About
+
+License: MIT (see LICENSE)
+
+This C module is written by Willem van Bergen with help from Dirkjan Bussink.
 
