@@ -9,6 +9,7 @@ require 'oily_png/oily_png_ext'
 
 class OilyCanvas < ChunkyPNG::Canvas
   extend OilyPNG::PNGDecoding
+  include OilyPNG::PNGEncoding
 end
 
 module ResourceHelper

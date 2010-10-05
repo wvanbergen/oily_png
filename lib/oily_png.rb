@@ -6,6 +6,7 @@ module OilyPNG
 
   def self.included(base)
     base::Canvas.extend OilyPNG::PNGDecoding
+    base::Canvas.include OilyPNG::PNGEncoding
   end
 
 end
