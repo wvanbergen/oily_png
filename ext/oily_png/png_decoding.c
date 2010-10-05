@@ -60,7 +60,7 @@ PIXEL oily_png_decode_pixel(int color_mode, unsigned char* bytes, int byte_index
 }
 
 // Decodes a SUB filtered scanline at the given position in the byte array
-void oily_png_filter_sub(unsigned char* bytes, int pos, int line_length, int pixel_size) {
+void oily_png_decode_filter_sub(unsigned char* bytes, int pos, int line_length, int pixel_size) {
   int i;
   for (i = 1 + pixel_size; i < line_length; i++) {
     bytes[pos + i] += bytes[pos + i - pixel_size]; // mod 256 ???
@@ -68,7 +68,7 @@ void oily_png_filter_sub(unsigned char* bytes, int pos, int line_length, int pix
 }
 
 // Decodes an UP filtered scanline at the given position in the byte array
-void oily_png_filter_up(unsigned char* bytes, int pos, int line_length, int pixel_size) {
+void oily_png_decode_filter_up(unsigned char* bytes, int pos, int line_length, int pixel_size) {
   int i;
   // The first line is not filtered because there is no privous line
   if (pos >= line_length) {
@@ -79,7 +79,7 @@ void oily_png_filter_up(unsigned char* bytes, int pos, int line_length, int pixe
 }
 
 // Decodes an AVERAGE filtered scanline at the given position in the byte array
-void oily_png_filter_average(unsigned char* bytes, int pos, int line_length, int pixel_size) {
+void oily_png_decode_filter_average(unsigned char* bytes, int pos, int line_length, int pixel_size) {
   int i;
   unsigned char a, b;
   for (i = 1; i < line_length; i++) {
@@ -90,7 +90,7 @@ void oily_png_filter_average(unsigned char* bytes, int pos, int line_length, int
 }
 
 // Decodes a PAETH filtered scanline at the given position in the byte array
-void oily_png_filter_paeth(unsigned char* bytes, int pos, int line_length, int pixel_size) {
+void oily_png_decode_filter_paeth(unsigned char* bytes, int pos, int line_length, int pixel_size) {
   unsigned char a, b, c, pr;
   int i, p, pa, pb, pc;
   for (i = 1; i < line_length; i++) {
@@ -138,10 +138,10 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
     // Apply filering to the line
     switch (bytes[line_start]) {
       case OILY_PNG_FILTER_NONE:    break;
-      case OILY_PNG_FILTER_SUB:     oily_png_filter_sub(     bytes, line_start, line_size, pixel_size); break;
-      case OILY_PNG_FILTER_UP:      oily_png_filter_up(      bytes, line_start, line_size, pixel_size); break;
-      case OILY_PNG_FILTER_AVERAGE: oily_png_filter_average( bytes, line_start, line_size, pixel_size); break;
-      case OILY_PNG_FILTER_PAETH:   oily_png_filter_paeth(   bytes, line_start, line_size, pixel_size); break;
+      case OILY_PNG_FILTER_SUB:     oily_png_decode_filter_sub(     bytes, line_start, line_size, pixel_size); break;
+      case OILY_PNG_FILTER_UP:      oily_png_decode_filter_up(      bytes, line_start, line_size, pixel_size); break;
+      case OILY_PNG_FILTER_AVERAGE: oily_png_decode_filter_average( bytes, line_start, line_size, pixel_size); break;
+      case OILY_PNG_FILTER_PAETH:   oily_png_decode_filter_paeth(   bytes, line_start, line_size, pixel_size); break;
       default: exit(1);
     }
     
