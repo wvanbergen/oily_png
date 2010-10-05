@@ -5,8 +5,8 @@ module OilyPNG
   VERSION = "0.0.4"
 
   def self.included(base)
-    base::Canvas.extend OilyPNG::PNGDecoding
-    base::Canvas.include OilyPNG::PNGEncoding
+    base::Canvas.send(:extend, OilyPNG::PNGDecoding)
+    base::Canvas.send(:include, OilyPNG::PNGEncoding)
   end
 
 end

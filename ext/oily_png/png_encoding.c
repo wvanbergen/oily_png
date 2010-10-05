@@ -88,6 +88,10 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
   int height     = FIX2INT(rb_funcall(self, rb_intern("height"), 0));
   VALUE pixels   = rb_funcall(self, rb_intern("pixels"), 0);
   
+  if (RARRAY_LEN(pixels) != width * height) {
+    exit(1);
+  }
+  
   VALUE palette = Qnil;
   if (FIX2INT(color_mode) == OILY_PNG_COLOR_INDEXED) {
     palette = rb_funcall(self, rb_intern("encoding_palette"), 0);
