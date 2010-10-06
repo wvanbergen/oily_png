@@ -29,7 +29,7 @@ void oily_png_encode_pixel(PIXEL pixel, int color_mode, BYTE* bytes, int pos, VA
       bytes[pos + 3] = (BYTE) ((pixel & (PIXEL) 0x000000ff));
       break;
     default: 
-      exit(1);
+      rb_raise(rb_eRuntimeError, "Unsupported color mode: %d", color_mode);
   }
 }
 
@@ -89,7 +89,7 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
   VALUE pixels   = rb_funcall(self, rb_intern("pixels"), 0);
   
   if (RARRAY_LEN(pixels) != width * height) {
-    exit(1);
+    rb_raise(rb_eRuntimeError, "The number of pixels does not match the canvas dimensions.");
   }
   
   VALUE palette = Qnil;
@@ -123,12 +123,11 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
         case OILY_PNG_FILTER_UP:      oily_png_encode_filter_up(      bytes, line_size * y, line_size, pixel_size); break;
         case OILY_PNG_FILTER_AVERAGE: oily_png_encode_filter_average( bytes, line_size * y, line_size, pixel_size); break;
         case OILY_PNG_FILTER_PAETH:   oily_png_encode_filter_paeth(   bytes, line_size * y, line_size, pixel_size); break;
-        default: exit(1);
+        default: rb_raise(rb_eRuntimeError, "Unsupported filter type: %d", FIX2INT(filtering));
       }
     }
   }
   
   rb_str_cat(stream, bytes, pass_size);
-  
   return Qnil;
 }

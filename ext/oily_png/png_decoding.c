@@ -15,8 +15,8 @@ PIXEL oily_png_decode_pixel(int color_mode, BYTE* bytes, int byte_index, VALUE d
       return (bytes[byte_index] << 24) + (bytes[byte_index] << 16) + (bytes[byte_index] << 8) + bytes[byte_index + 1];
     case OILY_PNG_COLOR_TRUECOLOR_ALPHA:
       return (bytes[byte_index] << 24) + (bytes[byte_index + 1] << 16) + (bytes[byte_index + 2] << 8) + bytes[byte_index + 3];
-    default: 
-      exit(1);
+    default:
+      rb_raise(rb_eRuntimeError, "Color mode not supported: %d", color_mode);
   }
 }
 
@@ -81,7 +81,7 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
   VALUE pixels = rb_ary_new();
   
   if (RSTRING_LEN(stream) < pass_size + FIX2INT(start_pos)) {
-    exit(1);
+    rb_raise(rb_eRuntimeError, "The length of the stream is too short to contain the image!");
   }
 
   // Copy the bytes for this pass from the stream to a separate location
@@ -110,7 +110,7 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
       case OILY_PNG_FILTER_UP:      oily_png_decode_filter_up(      bytes, line_start, line_size, pixel_size); break;
       case OILY_PNG_FILTER_AVERAGE: oily_png_decode_filter_average( bytes, line_start, line_size, pixel_size); break;
       case OILY_PNG_FILTER_PAETH:   oily_png_decode_filter_paeth(   bytes, line_start, line_size, pixel_size); break;
-      default: exit(1);
+      default: rb_raise(rb_eRuntimeError, "Filter type not supported: %d", bytes[line_start]);
     }
     
     // Set the filter byte to 0 because the bytearray is now unfiltered.

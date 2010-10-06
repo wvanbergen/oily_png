@@ -21,6 +21,6 @@ int oily_png_pixel_size(int color_mode) {
     case OILY_PNG_COLOR_INDEXED:         return 1;
     case OILY_PNG_COLOR_GRAYSCALE_ALPHA: return 2;
     case OILY_PNG_COLOR_TRUECOLOR_ALPHA: return 4;
-    default: return -1;
+    default: rb_raise(rb_eRuntimeError, "Unsupported color mode: %d", color_mode);
   }
 }
