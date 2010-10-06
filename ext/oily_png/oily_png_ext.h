@@ -24,7 +24,20 @@
 #include "png_decoding.h"
 #include "png_encoding.h"
 
+/*
+  Initialize the extension by creating the OilyPNG modules, and registering
+  the encoding and decoding replacement functions.
+  
+  Note, this does not actually replace functionality in ChunkyPNG; you will need
+  to extend the ChunkyPNG::Canvas class with the OilyPNG::PNGDecoding module to 
+  speed up decoding, and include OilyPNG::PNGEncoding into the same class to speed
+  up encoding. This is done in lib/oily_png.rb
+*/
 void Init_oily_png_ext();
+
+/*
+  Returns the number of bytes per pixel for a given color mode.
+*/
 int oily_png_pixel_size(int color_mode);
 
 #endif

@@ -1,6 +1,5 @@
 #include "oily_png_ext.h"
 
-// Initialize the extension by creating the OilyPNG modules.
 void Init_oily_png_ext() {
   VALUE OilyPNG = rb_define_module("OilyPNG");
 
@@ -13,7 +12,6 @@ void Init_oily_png_ext() {
   rb_define_method(OilyPNG_PNGEncoding, "encode_png_image_pass_to_stream", oily_png_encode_png_image_pass_to_stream, 3);
 }
 
-// Returns the number of bytes per pixel for a given color mode.
 int oily_png_pixel_size(int color_mode) {
   switch (color_mode) {
     case OILY_PNG_COLOR_GRAYSCALE:       return 1;

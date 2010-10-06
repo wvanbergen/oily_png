@@ -67,11 +67,6 @@ void oily_png_decode_filter_paeth(BYTE* bytes, int pos, int line_length, int pix
   }
 }
 
-/*
-  Decodes an image pass from the given byte stream at the given position.
-  A normal PNG will only have one pass that consumes the entire stream, while an
-  interlaced image requires 7 passes which are loaded from different starting positions.
-*/
 VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALUE height, VALUE color_mode, VALUE start_pos) {
   
   int pixel_size = oily_png_pixel_size(FIX2INT(color_mode));
