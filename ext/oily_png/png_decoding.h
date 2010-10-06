@@ -1,6 +1,8 @@
 #ifndef PNG_DECODING_H
 #define PNG_DECODING_H
 
+#define BUILD_PIXEL(r, g, b, a) (((PIXEL) r << 24) + ((PIXEL) g << 16) + ((PIXEL) b << 8) + (PIXEL) a)
+
 /*
   Decodes an image pass from the given byte stream at the given position.
   A normal PNG will only have one pass that consumes the entire stream, while an

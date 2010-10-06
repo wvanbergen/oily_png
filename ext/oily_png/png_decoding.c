@@ -1,24 +1,5 @@
 #include "oily_png_ext.h"
 
-////////////////////////////////////////////////////////////////////////////
-
-// Decodes a pixel at the given position in the bytearray
-PIXEL oily_png_decode_pixel(int color_mode, BYTE* bytes, int byte_index, VALUE decoding_palette) {
-  switch (color_mode) {
-    case OILY_PNG_COLOR_GRAYSCALE:
-      return (bytes[byte_index] << 24) + (bytes[byte_index] << 16) + (bytes[byte_index] << 8) + 0xff;
-    case OILY_PNG_COLOR_TRUECOLOR:
-      return (bytes[byte_index] << 24) + (bytes[byte_index + 1] << 16) + (bytes[byte_index + 2] << 8) + 0xff;
-    case OILY_PNG_COLOR_INDEXED:
-      return NUM2UINT(rb_funcall(decoding_palette, rb_intern("[]"), 1, INT2FIX(bytes[byte_index])));
-    case OILY_PNG_COLOR_GRAYSCALE_ALPHA:
-      return (bytes[byte_index] << 24) + (bytes[byte_index] << 16) + (bytes[byte_index] << 8) + bytes[byte_index + 1];
-    case OILY_PNG_COLOR_TRUECOLOR_ALPHA:
-      return (bytes[byte_index] << 24) + (bytes[byte_index + 1] << 16) + (bytes[byte_index + 2] << 8) + bytes[byte_index + 3];
-    default:
-      rb_raise(rb_eRuntimeError, "Color mode not supported: %d", color_mode);
-  }
-}
 
 // Decodes a SUB filtered scanline at the given position in the byte array
 void oily_png_decode_filter_sub(BYTE* bytes, int pos, int line_length, int pixel_size) {
@@ -29,35 +10,35 @@ void oily_png_decode_filter_sub(BYTE* bytes, int pos, int line_length, int pixel
 }
 
 // Decodes an UP filtered scanline at the given position in the byte array
-void oily_png_decode_filter_up(BYTE* bytes, int pos, int line_length, int pixel_size) {
+void oily_png_decode_filter_up(BYTE* bytes, int pos, int line_size, int pixel_size) {
   int i;
   // The first line is not filtered because there is no privous line
-  if (pos >= line_length) {
-    for (i = 1; i < line_length; i++) {
-      bytes[pos + i] += bytes[pos + i - line_length]; // mod 256 ???
+  if (pos >= line_size) {
+    for (i = 1; i < line_size; i++) {
+      bytes[pos + i] += bytes[pos + i - line_size]; // mod 256 ???
     }
   }
 }
 
 // Decodes an AVERAGE filtered scanline at the given position in the byte array
-void oily_png_decode_filter_average(BYTE* bytes, int pos, int line_length, int pixel_size) {
+void oily_png_decode_filter_average(BYTE* bytes, int pos, int line_size, int pixel_size) {
   int i;
   BYTE a, b;
-  for (i = 1; i < line_length; i++) {
+  for (i = 1; i < line_size; i++) {
     a = (i > pixel_size)     ? bytes[pos + i - pixel_size]  : 0;
-    b = (pos >= line_length) ? bytes[pos + i - line_length] : 0;
+    b = (pos >= line_size) ? bytes[pos + i - line_size] : 0;
     bytes[pos + i] += (a + b) >> 1; // mod 256 ???
   }
 }
 
 // Decodes a PAETH filtered scanline at the given position in the byte array
-void oily_png_decode_filter_paeth(BYTE* bytes, int pos, int line_length, int pixel_size) {
+void oily_png_decode_filter_paeth(BYTE* bytes, int pos, int line_size, int pixel_size) {
   BYTE a, b, c, pr;
   int i, p, pa, pb, pc;
-  for (i = 1; i < line_length; i++) {
+  for (i = 1; i < line_size; i++) {
     a = (i > pixel_size) ? bytes[pos + i - pixel_size]  : 0;
-    b = (pos >= line_length) ? bytes[pos + i - line_length] : 0;
-    c = (pos >= line_length && i > pixel_size) ? bytes[pos + i - line_length - pixel_size] : 0;
+    b = (pos >= line_size) ? bytes[pos + i - line_size] : 0;
+    c = (pos >= line_size && i > pixel_size) ? bytes[pos + i - line_size - pixel_size] : 0;
     p = a + b - c;
     pa = abs(p - a);
     pb = abs(p - b);
@@ -65,6 +46,26 @@ void oily_png_decode_filter_paeth(BYTE* bytes, int pos, int line_length, int pix
     pr = (pa <= pb) ? (pa <= pc ? a : c) : (pb <= pc ? b : c);
     bytes[pos + i] += pr; // mod 256 ???
   }
+}
+
+PIXEL oily_png_decode_pixel_grayscale(int color_mode, BYTE* bytes, int byte_index, VALUE decoding_palette) {
+  return BUILD_PIXEL(bytes[byte_index], bytes[byte_index], bytes[byte_index], 0xff);
+}
+
+PIXEL oily_png_decode_pixel_truecolor(int color_mode, BYTE* bytes, int byte_index, VALUE decoding_palette) {
+  return BUILD_PIXEL(bytes[byte_index], bytes[byte_index + 1], bytes[byte_index + 2], 0xff);
+}
+
+PIXEL oily_png_decode_pixel_indexed(int color_mode, BYTE* bytes, int byte_index, VALUE decoding_palette) {
+  return (PIXEL) NUM2UINT(rb_funcall(decoding_palette, rb_intern("[]"), 1, INT2FIX(bytes[byte_index])));
+}
+
+PIXEL oily_png_decode_pixel_grayscale_alpha(int color_mode, BYTE* bytes, int byte_index, VALUE decoding_palette) {
+  return BUILD_PIXEL(bytes[byte_index], bytes[byte_index], bytes[byte_index], bytes[byte_index + 1]);
+}
+
+PIXEL oily_png_decode_pixel_truecolor_alpha(int color_mode, BYTE* bytes, int byte_index, VALUE decoding_palette) {
+  return BUILD_PIXEL(bytes[byte_index], bytes[byte_index + 1], bytes[byte_index + 2], bytes[byte_index + 3]);
 }
 
 VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALUE height, VALUE color_mode, VALUE start_pos) {
@@ -75,6 +76,7 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
   
   VALUE pixels = rb_ary_new();
   
+  // Make sure that the stream is large enough to contain out pass.
   if (RSTRING_LEN(stream) < pass_size + FIX2INT(start_pos)) {
     rb_raise(rb_eRuntimeError, "The length of the stream is too short to contain the image!");
   }
@@ -91,8 +93,18 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
     decoding_palette = rb_funcall(self, rb_intern("decoding_palette"), 0);
   }
 
-  int y, x, line_start, prev_line_start, byte_index, pixel_index;
-  BYTE filter;
+  // Select the pixel decoder function for this color mode.
+  PIXEL (*pixel_decoder)(int, BYTE*, int, VALUE);
+  switch (FIX2INT(color_mode)) {
+    case OILY_PNG_COLOR_GRAYSCALE:       pixel_decoder = &oily_png_decode_pixel_grayscale; break;
+    case OILY_PNG_COLOR_TRUECOLOR:       pixel_decoder = &oily_png_decode_pixel_truecolor; break;
+    case OILY_PNG_COLOR_INDEXED:         pixel_decoder = &oily_png_decode_pixel_indexed; break;
+    case OILY_PNG_COLOR_GRAYSCALE_ALPHA: pixel_decoder = &oily_png_decode_pixel_grayscale_alpha; break;
+    case OILY_PNG_COLOR_TRUECOLOR_ALPHA: pixel_decoder = &oily_png_decode_pixel_truecolor_alpha; break;
+    default: rb_raise(rb_eRuntimeError, "Color mode not supported: %d", color_mode);
+  }
+  
+  int y, x, line_start, byte_index, pixel_index;
   PIXEL pixel;
   
   for (y = 0; y < FIX2INT(height); y++) {
@@ -115,7 +127,7 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
     for (x = 0; x < FIX2INT(width); x++) {
       pixel_index = FIX2INT(width) * y + x;
       byte_index  = line_start + 1 + (x * pixel_size);
-      pixel = oily_png_decode_pixel(FIX2INT(color_mode), bytes, byte_index, decoding_palette); 
+      pixel = pixel_decoder(FIX2INT(color_mode), bytes, byte_index, decoding_palette); 
       rb_ary_store(pixels, pixel_index, INT2NUM(pixel));
     }
   }
