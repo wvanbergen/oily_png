@@ -3,6 +3,10 @@
 
 #include "ruby.h"
 
+#include "png_decoding.h"
+#include "png_encoding.h"
+
+
 // PNG color mode constants
 #define OILY_PNG_COLOR_GRAYSCALE        0
 #define OILY_PNG_COLOR_TRUECOLOR        2
@@ -21,8 +25,11 @@
 #define PIXEL unsigned int  // Pixels use 32 bits unsigned integers
 #define BYTE  unsigned char // Bytes use 8 bits unsigned integers
 
-#include "png_decoding.h"
-#include "png_encoding.h"
+#define R_BYTE(pixel)  ((BYTE) ((pixel & (PIXEL) 0xff000000) >> 24))
+#define G_BYTE(pixel)  ((BYTE) ((pixel & (PIXEL) 0x00ff0000) >> 16))
+#define B_BYTE(pixel)  ((BYTE) ((pixel & (PIXEL) 0x0000ff00) >> 8))
+#define A_BYTE(pixel)  ((BYTE) ((pixel & (PIXEL) 0x000000ff)))
+
 
 /*
   Initialize the extension by creating the OilyPNG modules, and registering

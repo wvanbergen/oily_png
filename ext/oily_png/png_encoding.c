@@ -1,32 +1,27 @@
 #include "oily_png_ext.h"
 
-PIXEL oily_png_encode_get_pixel(VALUE self, long index) {
-  VALUE pixels = rb_funcall(self, rb_intern("pixels"), 0);
-  return NUM2UINT(rb_ary_entry(pixels, index));
-}
-
 void oily_png_encode_pixel(PIXEL pixel, int color_mode, BYTE* bytes, int pos, VALUE palette) {
   switch (color_mode) {
     case OILY_PNG_COLOR_GRAYSCALE:
-      bytes[pos] = (BYTE) ((pixel & (PIXEL) 0xff000000) >> 24);
+      bytes[pos] = R_BYTE(pixel);
       break;
     case OILY_PNG_COLOR_TRUECOLOR:
-      bytes[pos + 0] = (BYTE) ((pixel & (PIXEL) 0xff000000) >> 24);
-      bytes[pos + 1] = (BYTE) ((pixel & (PIXEL) 0x00ff0000) >> 16);
-      bytes[pos + 2] = (BYTE) ((pixel & (PIXEL) 0x0000ff00) >>  8);
+      bytes[pos + 0] = R_BYTE(pixel);
+      bytes[pos + 1] = G_BYTE(pixel);
+      bytes[pos + 2] = B_BYTE(pixel);
       break;
     case OILY_PNG_COLOR_INDEXED:
       bytes[pos] = (BYTE) NUM2UINT(rb_funcall(palette, rb_intern("index"), 1, UINT2NUM(pixel)));
       break;
     case OILY_PNG_COLOR_GRAYSCALE_ALPHA:
-      bytes[pos + 0] = (BYTE) ((pixel & (PIXEL) 0xff000000) >> 24);
-      bytes[pos + 1] = (BYTE) ((pixel & (PIXEL) 0x000000ff));
+      bytes[pos + 0] = R_BYTE(pixel);
+      bytes[pos + 1] = A_BYTE(pixel);
       break;
     case OILY_PNG_COLOR_TRUECOLOR_ALPHA:
-      bytes[pos + 0] = (BYTE) ((pixel & (PIXEL) 0xff000000) >> 24);
-      bytes[pos + 1] = (BYTE) ((pixel & (PIXEL) 0x00ff0000) >> 16);
-      bytes[pos + 2] = (BYTE) ((pixel & (PIXEL) 0x0000ff00) >>  8);
-      bytes[pos + 3] = (BYTE) ((pixel & (PIXEL) 0x000000ff));
+      bytes[pos + 0] = R_BYTE(pixel);
+      bytes[pos + 1] = G_BYTE(pixel);
+      bytes[pos + 2] = B_BYTE(pixel);
+      bytes[pos + 3] = A_BYTE(pixel);
       break;
     default: 
       rb_raise(rb_eRuntimeError, "Unsupported color mode: %d", color_mode);
