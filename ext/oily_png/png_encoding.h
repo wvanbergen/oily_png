@@ -6,6 +6,7 @@
 #define B_BYTE(pixel)  ((BYTE) ((pixel & (PIXEL) 0x0000ff00) >> 8))
 #define A_BYTE(pixel)  ((BYTE) ((pixel & (PIXEL) 0x000000ff)))
 
+#define FILTER_BYTE(byte, adjustment)  byte = (BYTE) (((byte) - (adjustment)) & 0x000000ff)
 
 /*
   Encodes an image and append it to the stream.

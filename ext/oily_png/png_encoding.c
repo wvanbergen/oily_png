@@ -31,7 +31,7 @@ void oily_png_encode_pixel(PIXEL pixel, int color_mode, BYTE* bytes, int pos, VA
 void oily_png_encode_filter_sub(BYTE* bytes, int pos, int line_size, int pixel_size) {
   int x;
   for (x = line_size - 1; x > pixel_size; x--) {
-    bytes[pos + x] -= bytes[pos + x - pixel_size];
+    FILTER_BYTE(bytes[pos + x], bytes[pos + x - pixel_size]);
   }
 }
 
@@ -39,7 +39,7 @@ void oily_png_encode_filter_up(BYTE* bytes, int pos, int line_size, int pixel_si
   int x;
   if (pos >= line_size) {
     for (x = line_size - 1; x > 0; x--) {
-      bytes[pos + x] -= bytes[pos + x - line_size];
+      FILTER_BYTE(bytes[pos + x], bytes[pos + x - line_size]);
     }
   }
 }
@@ -49,7 +49,7 @@ void oily_png_encode_filter_average(BYTE* bytes, int pos, int line_size, int pix
   for (x = line_size - 1; x > 0; x--) {
     a = (x > pixel_size)   ? bytes[pos + x - pixel_size] : 0;
     b = (pos >= line_size) ? bytes[pos + x - line_size]  : 0;
-    bytes[pos + x] -= ((a + b) >> 1);
+    FILTER_BYTE(bytes[pos + x], (a + b) >> 1);
   }
 }
 
@@ -64,7 +64,7 @@ void oily_png_encode_filter_paeth(BYTE* bytes, int pos, int line_size, int pixel
     pb = abs(p - b);
     pc = abs(p - c);
     pr = (pa <= pb && pa <= pc) ? a : (pb <= pc ? b : c);
-    bytes[pos + x] -= pr;
+    FILTER_BYTE(bytes[pos + x], pr);
   }
   
 }

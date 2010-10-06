@@ -2,6 +2,7 @@
 #define PNG_DECODING_H
 
 #define BUILD_PIXEL(r, g, b, a) (((PIXEL) r << 24) + ((PIXEL) g << 16) + ((PIXEL) b << 8) + (PIXEL) a)
+#define UNFILTER_BYTE(byte, adjustment)  byte = (BYTE) (((byte) + (adjustment)) & 0x000000ff)
 
 /*
   Decodes an image pass from the given byte stream at the given position.

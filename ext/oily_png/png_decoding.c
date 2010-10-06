@@ -5,7 +5,7 @@
 void oily_png_decode_filter_sub(BYTE* bytes, int pos, int line_length, int pixel_size) {
   int i;
   for (i = 1 + pixel_size; i < line_length; i++) {
-    bytes[pos + i] += bytes[pos + i - pixel_size]; // mod 256 ???
+    UNFILTER_BYTE(bytes[pos + i], bytes[pos + i - pixel_size]);
   }
 }
 
@@ -15,7 +15,7 @@ void oily_png_decode_filter_up(BYTE* bytes, int pos, int line_size, int pixel_si
   // The first line is not filtered because there is no privous line
   if (pos >= line_size) {
     for (i = 1; i < line_size; i++) {
-      bytes[pos + i] += bytes[pos + i - line_size]; // mod 256 ???
+      UNFILTER_BYTE(bytes[pos + i], bytes[pos + i - line_size]);
     }
   }
 }
@@ -27,7 +27,7 @@ void oily_png_decode_filter_average(BYTE* bytes, int pos, int line_size, int pix
   for (i = 1; i < line_size; i++) {
     a = (i > pixel_size)     ? bytes[pos + i - pixel_size]  : 0;
     b = (pos >= line_size) ? bytes[pos + i - line_size] : 0;
-    bytes[pos + i] += (a + b) >> 1; // mod 256 ???
+    UNFILTER_BYTE(bytes[pos + i], (a + b) >> 1);
   }
 }
 
@@ -44,7 +44,7 @@ void oily_png_decode_filter_paeth(BYTE* bytes, int pos, int line_size, int pixel
     pb = abs(p - b);
     pc = abs(p - c);
     pr = (pa <= pb) ? (pa <= pc ? a : c) : (pb <= pc ? b : c);
-    bytes[pos + i] += pr; // mod 256 ???
+    UNFILTER_BYTE(bytes[pos + i], pr);
   }
 }
 
