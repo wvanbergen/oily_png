@@ -116,6 +116,6 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
     }
   }
   
-  rb_str_cat(stream, bytes, pass_size);
+  rb_str_cat(stream, (char*) bytes, pass_size);
   return Qnil;
 }
