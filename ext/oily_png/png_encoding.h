@@ -1,10 +1,10 @@
 #ifndef PNG_ENCODING_H
 #define PNG_ENCODING_H
 
-#define R_BYTE(pixel)  ((BYTE) ((pixel & (PIXEL) 0xff000000) >> 24))
-#define G_BYTE(pixel)  ((BYTE) ((pixel & (PIXEL) 0x00ff0000) >> 16))
-#define B_BYTE(pixel)  ((BYTE) ((pixel & (PIXEL) 0x0000ff00) >> 8))
-#define A_BYTE(pixel)  ((BYTE) ((pixel & (PIXEL) 0x000000ff)))
+#define R_BYTE(pixel)  ((BYTE) (((pixel) & (PIXEL) 0xff000000) >> 24))
+#define G_BYTE(pixel)  ((BYTE) (((pixel) & (PIXEL) 0x00ff0000) >> 16))
+#define B_BYTE(pixel)  ((BYTE) (((pixel) & (PIXEL) 0x0000ff00) >> 8))
+#define A_BYTE(pixel)  ((BYTE) (((pixel) & (PIXEL) 0x000000ff)))
 
 #define FILTER_BYTE(byte, adjustment)  byte = (BYTE) (((byte) - (adjustment)) & 0x000000ff)
 

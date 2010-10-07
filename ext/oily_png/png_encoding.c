@@ -109,7 +109,7 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
   PIXEL pixel;
   int x, y, pos;
   for (y = 0; y < height; y++) {
-    bytes[line_size * y] = FIX2INT(filtering);
+    bytes[line_size * y] = (BYTE) FIX2INT(filtering);
     
     for (x = 0; x < width; x++) {
       pixel = NUM2UINT(rb_ary_entry(pixels, y * height + x));
