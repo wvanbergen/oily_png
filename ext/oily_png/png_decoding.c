@@ -94,7 +94,7 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
   }
 
   // Select the pixel decoder function for this color mode.
-  PIXEL (*pixel_decoder)(int, BYTE*, int, VALUE);
+  PIXEL (*pixel_decoder)(int, BYTE*, int, VALUE) = NULL;
   switch (FIX2INT(color_mode)) {
     case OILY_PNG_COLOR_GRAYSCALE:       pixel_decoder = &oily_png_decode_pixel_grayscale; break;
     case OILY_PNG_COLOR_TRUECOLOR:       pixel_decoder = &oily_png_decode_pixel_truecolor; break;
