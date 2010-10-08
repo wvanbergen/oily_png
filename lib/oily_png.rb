@@ -2,7 +2,7 @@ require 'chunky_png'
 
 module OilyPNG
   
-  VERSION = "0.0.8"
+  VERSION = "0.1.0"
 
   def self.included(base)
     base::Canvas.send(:extend, OilyPNG::PNGDecoding)
