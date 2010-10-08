@@ -3,11 +3,15 @@
 ///// Pixel encoding functions //////////////////////////////////////////
 
 void oily_png_encode_pixel_grayscale(PIXEL pixel, BYTE* bytes, int pos, VALUE palette) {
-  bytes[pos] = R_BYTE(pixel);
+  // Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
+  // We'll uses the same to reomain compatible with ChunkyPNG.
+  bytes[pos] = B_BYTE(pixel);
 }
 
 void oily_png_encode_pixel_grayscale_alpha(PIXEL pixel, BYTE* bytes, int pos, VALUE palette) {
-  bytes[pos + 0] = R_BYTE(pixel);
+  // Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
+  // We'll uses the same to reomain compatible with ChunkyPNG.
+  bytes[pos + 0] = B_BYTE(pixel);
   bytes[pos + 1] = A_BYTE(pixel);
 }
 
