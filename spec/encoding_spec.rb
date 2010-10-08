@@ -46,7 +46,7 @@ describe OilyPNG::PNGEncoding do
   
   context 'encoding different filters' do
     before do 
-      @canvas      = ChunkyPNG::Canvas.from_file(resource_file('operations.png'))
+      @canvas      = ChunkyPNG::Canvas.from_file(resource_file('nonsquare.png'))
       @oily_canvas = OilyCanvas.from_canvas(@canvas)
     end
     

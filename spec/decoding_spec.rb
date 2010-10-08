@@ -4,12 +4,12 @@ describe OilyPNG::PNGDecoding do
 
   it "should call Color.bytesize in the pure ruby version" do
     ChunkyPNG::Color.should_receive(:bytesize).and_return(3)
-    ChunkyPNG::Canvas.from_file(resource_file('operations.png'))
+    ChunkyPNG::Canvas.from_file(resource_file('square.png'))
   end
 
   it "should not call Color.bytesize in the native version" do
     ChunkyPNG::Color.should_not_receive(:bytesize)
-    OilyCanvas.from_file(resource_file('operations.png'))
+    OilyCanvas.from_file(resource_file('square.png'))
   end
   
   it "should decode an interlaced image correctly" do
@@ -19,7 +19,7 @@ describe OilyPNG::PNGDecoding do
   end
   
   context 'decoding different filtering methods' do
-    before(:all) { @reference = ChunkyPNG::Canvas.from_file(resource_file('operations.png'))}
+    before(:all) { @reference = ChunkyPNG::Canvas.from_file(resource_file('nonsquare.png'))}
     
     it "should decode NONE filtering exactly the same as ChunkyPNG" do
       filtered_data = @reference.to_blob(:filtering => ChunkyPNG::FILTER_NONE)

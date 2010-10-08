@@ -80,7 +80,7 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
   if (RARRAY_LEN(pixels) != width * height) {
     rb_raise(rb_eRuntimeError, "The number of pixels does not match the canvas dimensions.");
   }
-  
+
   // Get the encoding palette if we're encoding to an indexed bytestream.
   VALUE palette = Qnil;
   if (FIX2INT(color_mode) == OILY_PNG_COLOR_INDEXED) {
@@ -112,7 +112,7 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
     bytes[line_size * y] = (BYTE) FIX2INT(filtering);
     
     for (x = 0; x < width; x++) {
-      pixel = NUM2UINT(rb_ary_entry(pixels, y * height + x));
+      pixel = NUM2UINT(rb_ary_entry(pixels, y * width + x));
       pos   = (line_size * y) + (pixel_size * x) + 1;
       pixel_encoder(pixel, bytes, pos, palette);
     }
