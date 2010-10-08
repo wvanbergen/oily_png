@@ -106,7 +106,7 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
     case OILY_PNG_COLOR_INDEXED:         pixel_encoder = &oily_png_encode_pixel_indexed; break;
     case OILY_PNG_COLOR_GRAYSCALE_ALPHA: pixel_encoder = &oily_png_encode_pixel_grayscale_alpha; break;
     case OILY_PNG_COLOR_TRUECOLOR_ALPHA: pixel_encoder = &oily_png_encode_pixel_truecolor_alpha; break;
-    default: rb_raise(rb_eRuntimeError, "Unsupported color mode: %d", color_mode);
+    default: rb_raise(rb_eRuntimeError, "Unsupported color mode: %ld", FIX2INT(color_mode));
   }
 
   // Loop over all the pixels to encode them into the byte array.
@@ -132,7 +132,7 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
       case OILY_PNG_FILTER_UP:      scanline_filter = &oily_png_encode_filter_up; break;
       case OILY_PNG_FILTER_AVERAGE: scanline_filter = &oily_png_encode_filter_average; break;
       case OILY_PNG_FILTER_PAETH:   scanline_filter = &oily_png_encode_filter_paeth; break;
-      default: rb_raise(rb_eRuntimeError, "Unsupported filter type: %d", FIX2INT(filtering));
+      default: rb_raise(rb_eRuntimeError, "Unsupported filter type: %ld", FIX2INT(filtering));
     }
     
     // Now, apply the scanline_filter function to every line, backwards.

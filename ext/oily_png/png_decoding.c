@@ -101,7 +101,7 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
     case OILY_PNG_COLOR_INDEXED:         pixel_decoder = &oily_png_decode_pixel_indexed; break;
     case OILY_PNG_COLOR_GRAYSCALE_ALPHA: pixel_decoder = &oily_png_decode_pixel_grayscale_alpha; break;
     case OILY_PNG_COLOR_TRUECOLOR_ALPHA: pixel_decoder = &oily_png_decode_pixel_truecolor_alpha; break;
-    default: rb_raise(rb_eRuntimeError, "Color mode not supported: %d", color_mode);
+    default: rb_raise(rb_eRuntimeError, "Color mode not supported: %ld", FIX2INT(color_mode));
   }
   
   int y, x, line_start, byte_index, pixel_index;
@@ -135,4 +135,3 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
   // Now, return a new ChunkyPNG::Canvas instance with the decoded pixels.
   return rb_funcall(self, rb_intern("new"), 3, width, height, pixels);
 }
-
