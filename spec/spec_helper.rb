@@ -3,7 +3,7 @@ require 'bundler'
 
 Bundler.setup
 
-require 'spec'
+require 'rspec'
 require 'chunky_png'
 require 'oily_png/oily_png_ext'
 
@@ -35,7 +35,7 @@ module CanvasHelper
   end
 end
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   config.extend ResourceHelper
   config.include CanvasHelper
 end
