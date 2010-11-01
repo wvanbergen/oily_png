@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    oily_png (0.1.1)
+    oily_png (0.2.0)
       chunky_png (~> 0.11)
 
 GEM
