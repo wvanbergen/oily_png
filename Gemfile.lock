@@ -2,12 +2,12 @@ PATH
   remote: .
   specs:
     oily_png (0.1.1)
-      chunky_png (~> 0.10.4)
+      chunky_png (~> 0.11)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    chunky_png (0.10.4)
+    chunky_png (0.11.0)
     diff-lcs (1.1.2)
     rake (0.8.7)
     rspec (2.0.0)
@@ -25,7 +25,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  chunky_png (~> 0.10.4)
+  chunky_png (~> 0.11)
   oily_png!
   rake
   rspec (~> 2.0)
