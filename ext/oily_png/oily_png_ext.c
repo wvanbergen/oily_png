@@ -12,7 +12,7 @@ void Init_oily_png_ext() {
   rb_define_method(OilyPNG_PNGEncoding, "encode_png_image_pass_to_stream", oily_png_encode_png_image_pass_to_stream, 3);
 }
 
-int oily_png_samples_per_pixel(int color_mode) {
+char oily_png_samples_per_pixel(char color_mode) {
   switch (color_mode) {
     case OILY_PNG_COLOR_GRAYSCALE:       return 1;
     case OILY_PNG_COLOR_TRUECOLOR:       return 3;
@@ -23,18 +23,18 @@ int oily_png_samples_per_pixel(int color_mode) {
   }
 }
 
-int oily_png_pixel_bitsize(int color_mode, int bit_depth) {
+char oily_png_pixel_bitsize(char color_mode, char bit_depth) {
   return oily_png_samples_per_pixel(color_mode) * bit_depth;
 }
 
-int oily_png_pixel_bytesize(int color_mode, int bit_depth) {
+char oily_png_pixel_bytesize(char color_mode, char bit_depth) {
   return (bit_depth < 8) ? 1 : (oily_png_pixel_bitsize(color_mode, bit_depth) + 7) >> 3;
 }
 
-int oily_png_scanline_bytesize(int color_mode, int bit_depth, int width) {
-  return 8 + ((oily_png_pixel_bitsize(color_mode, bit_depth) * width) + 7) >> 3;
+long oily_png_scanline_bytesize(char color_mode, char bit_depth, long width) {
+  return (8 + ((oily_png_pixel_bitsize(color_mode, bit_depth) * width) + 7)) >> 3;
 }
 
-int oily_png_pass_bytesize(int color_mode, int bit_depth, int width, int height) {
+long oily_png_pass_bytesize(char color_mode, char bit_depth, long width, long height) {
   return (width == 0 || height == 0) ? 0 : (oily_png_scanline_bytesize(color_mode, bit_depth, width)) * height;
 }

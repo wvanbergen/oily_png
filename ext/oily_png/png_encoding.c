@@ -2,47 +2,47 @@
 
 ///// Pixel encoding functions //////////////////////////////////////////
 
-void oily_png_encode_pixel_grayscale(PIXEL pixel, BYTE* bytes, int pos, VALUE palette) {
+void oily_png_encode_pixel_grayscale(PIXEL pixel, BYTE* bytes, long pos, VALUE palette) {
   // Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
   // We'll uses the same to reomain compatible with ChunkyPNG.
   bytes[pos] = B_BYTE(pixel);
 }
 
-void oily_png_encode_pixel_grayscale_alpha(PIXEL pixel, BYTE* bytes, int pos, VALUE palette) {
+void oily_png_encode_pixel_grayscale_alpha(PIXEL pixel, BYTE* bytes, long pos, VALUE palette) {
   // Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
   // We'll uses the same to reomain compatible with ChunkyPNG.
   bytes[pos + 0] = B_BYTE(pixel);
   bytes[pos + 1] = A_BYTE(pixel);
 }
 
-void oily_png_encode_pixel_truecolor(PIXEL pixel, BYTE* bytes, int pos, VALUE palette) {
+void oily_png_encode_pixel_truecolor(PIXEL pixel, BYTE* bytes, long pos, VALUE palette) {
   bytes[pos + 0] = R_BYTE(pixel);
   bytes[pos + 1] = G_BYTE(pixel);
   bytes[pos + 2] = B_BYTE(pixel);
 }
 
-void oily_png_encode_pixel_truecolor_alpha(PIXEL pixel, BYTE* bytes, int pos, VALUE palette) {
+void oily_png_encode_pixel_truecolor_alpha(PIXEL pixel, BYTE* bytes, long pos, VALUE palette) {
   bytes[pos + 0] = R_BYTE(pixel);
   bytes[pos + 1] = G_BYTE(pixel);
   bytes[pos + 2] = B_BYTE(pixel);
   bytes[pos + 3] = A_BYTE(pixel);
 }
 
-void oily_png_encode_pixel_indexed(PIXEL pixel, BYTE* bytes, int pos, VALUE palette) {
+void oily_png_encode_pixel_indexed(PIXEL pixel, BYTE* bytes, long pos, VALUE palette) {
   bytes[pos] = (BYTE) NUM2UINT(rb_funcall(palette, rb_intern("index"), 1, UINT2NUM(pixel)));
 }
 
 ///// Scanline filtering functions //////////////////////////////////////////
 
-void oily_png_encode_filter_sub(BYTE* bytes, int pos, int line_size, int pixel_size) {
-  int x;
+void oily_png_encode_filter_sub(BYTE* bytes, long pos, long line_size, char pixel_size) {
+  long x;
   for (x = line_size - 1; x > pixel_size; x--) {
     FILTER_BYTE(bytes[pos + x], bytes[pos + x - pixel_size]);
   }
 }
 
-void oily_png_encode_filter_up(BYTE* bytes, int pos, int line_size, int pixel_size) {
-  int x;
+void oily_png_encode_filter_up(BYTE* bytes, long pos, long line_size, char pixel_size) {
+  long x;
   if (pos >= line_size) {
     for (x = line_size - 1; x > 0; x--) {
       FILTER_BYTE(bytes[pos + x], bytes[pos + x - line_size]);
@@ -50,8 +50,8 @@ void oily_png_encode_filter_up(BYTE* bytes, int pos, int line_size, int pixel_si
   }
 }
 
-void oily_png_encode_filter_average(BYTE* bytes, int pos, int line_size, int pixel_size) {
-  int x; BYTE a, b;
+void oily_png_encode_filter_average(BYTE* bytes, long pos, long line_size, char pixel_size) {
+  long x; BYTE a, b;
   for (x = line_size - 1; x > 0; x--) {
     a = (x > pixel_size)   ? bytes[pos + x - pixel_size] : 0;
     b = (pos >= line_size) ? bytes[pos + x - line_size]  : 0;
@@ -59,8 +59,8 @@ void oily_png_encode_filter_average(BYTE* bytes, int pos, int line_size, int pix
   }
 }
 
-void oily_png_encode_filter_paeth(BYTE* bytes, int pos, int line_size, int pixel_size) {
-  int x, p, pa, pb, pc; BYTE a, b, c, pr;
+void oily_png_encode_filter_paeth(BYTE* bytes, long pos, long line_size, char pixel_size) {
+  long x; int p, pa, pb, pc; BYTE a, b, c, pr;
   for (x = line_size - 1; x > 0; x--) {
     a = (x > pixel_size) ? bytes[pos + x - pixel_size] : 0;
     b = (pos >= line_size) ? bytes[pos + x - line_size] : 0;
@@ -77,9 +77,9 @@ void oily_png_encode_filter_paeth(BYTE* bytes, int pos, int line_size, int pixel
 VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE color_mode, VALUE filtering) {
   
   // Get the data
-  int depth      = 8;
-  int width      = FIX2INT(rb_funcall(self, rb_intern("width"), 0));
-  int height     = FIX2INT(rb_funcall(self, rb_intern("height"), 0));
+  char depth      = 8;
+  long width      = FIX2LONG(rb_funcall(self, rb_intern("width"), 0));
+  long height     = FIX2LONG(rb_funcall(self, rb_intern("height"), 0));
   VALUE pixels   = rb_funcall(self, rb_intern("pixels"), 0);
   
   if (RARRAY_LEN(pixels) != width * height) {
@@ -92,27 +92,27 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
     palette = rb_funcall(self, rb_intern("encoding_palette"), 0);
   }
   
-  int pixel_size = oily_png_pixel_bytesize(FIX2INT(color_mode), depth);
-  int line_size  = oily_png_scanline_bytesize(FIX2INT(color_mode), depth, width);
-  int pass_size  = oily_png_pass_bytesize(FIX2INT(color_mode), depth, width, height);
+  char pixel_size = oily_png_pixel_bytesize(FIX2INT(color_mode), depth);
+  long line_size  = oily_png_scanline_bytesize(FIX2INT(color_mode), depth, width);
+  long pass_size  = oily_png_pass_bytesize(FIX2INT(color_mode), depth, width, height);
 
   // Allocate memory for the byte array.
   BYTE* bytes = ALLOCA_N(BYTE, pass_size);
 
   // Select out pixel encoder function based on the color mode.
-  void (*pixel_encoder)(PIXEL, BYTE*, int, VALUE) = NULL;
+  void (*pixel_encoder)(PIXEL, BYTE*, long, VALUE) = NULL;
   switch (FIX2INT(color_mode)) {
     case OILY_PNG_COLOR_GRAYSCALE:       pixel_encoder = &oily_png_encode_pixel_grayscale; break;
     case OILY_PNG_COLOR_TRUECOLOR:       pixel_encoder = &oily_png_encode_pixel_truecolor; break;
     case OILY_PNG_COLOR_INDEXED:         pixel_encoder = &oily_png_encode_pixel_indexed; break;
     case OILY_PNG_COLOR_GRAYSCALE_ALPHA: pixel_encoder = &oily_png_encode_pixel_grayscale_alpha; break;
     case OILY_PNG_COLOR_TRUECOLOR_ALPHA: pixel_encoder = &oily_png_encode_pixel_truecolor_alpha; break;
-    default: rb_raise(rb_eRuntimeError, "Unsupported color mode: %ld", FIX2INT(color_mode));
+    default: rb_raise(rb_eRuntimeError, "Unsupported color mode: %d", FIX2INT(color_mode));
   }
 
   // Loop over all the pixels to encode them into the byte array.
   PIXEL pixel;
-  int x, y, pos;
+  long x, y, pos;
   for (y = 0; y < height; y++) {
     bytes[line_size * y] = (BYTE) FIX2INT(filtering);
     
@@ -127,13 +127,13 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
   if (FIX2INT(filtering) != OILY_PNG_FILTER_NONE) {
     
     // Assign the chosen filter function to the scanline_filter variable.
-    void (*scanline_filter)(BYTE*, int, int, int) = NULL;
+    void (*scanline_filter)(BYTE*, long, long, char) = NULL;
     switch (FIX2INT(filtering)) {
       case OILY_PNG_FILTER_SUB:     scanline_filter = &oily_png_encode_filter_sub; break;
       case OILY_PNG_FILTER_UP:      scanline_filter = &oily_png_encode_filter_up; break;
       case OILY_PNG_FILTER_AVERAGE: scanline_filter = &oily_png_encode_filter_average; break;
       case OILY_PNG_FILTER_PAETH:   scanline_filter = &oily_png_encode_filter_paeth; break;
-      default: rb_raise(rb_eRuntimeError, "Unsupported filter type: %ld", FIX2INT(filtering));
+      default: rb_raise(rb_eRuntimeError, "Unsupported filter type: %d", FIX2INT(filtering));
     }
     
     // Now, apply the scanline_filter function to every line, backwards.
