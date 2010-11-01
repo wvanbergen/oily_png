@@ -77,6 +77,7 @@ void oily_png_encode_filter_paeth(BYTE* bytes, int pos, int line_size, int pixel
 VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE color_mode, VALUE filtering) {
   
   // Get the data
+  int depth      = 8;
   int width      = FIX2INT(rb_funcall(self, rb_intern("width"), 0));
   int height     = FIX2INT(rb_funcall(self, rb_intern("height"), 0));
   VALUE pixels   = rb_funcall(self, rb_intern("pixels"), 0);
@@ -91,9 +92,9 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
     palette = rb_funcall(self, rb_intern("encoding_palette"), 0);
   }
   
-  int pixel_size = oily_png_pixel_size(FIX2INT(color_mode));
-  int line_size = 1 + pixel_size * width;
-  int pass_size = line_size * height;
+  int pixel_size = oily_png_pixel_bytesize(FIX2INT(color_mode), depth);
+  int line_size  = oily_png_scanline_bytesize(FIX2INT(color_mode), depth, width);
+  int pass_size  = oily_png_pass_bytesize(FIX2INT(color_mode), depth, width, height);
 
   // Allocate memory for the byte array.
   BYTE* bytes = ALLOCA_N(BYTE, pass_size);

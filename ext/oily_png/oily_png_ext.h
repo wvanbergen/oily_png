@@ -37,8 +37,28 @@
 void Init_oily_png_ext();
 
 /*
-  Returns the number of bytes per pixel for a given color mode.
+  Returns the number of samples per pixel for a given color mode
 */
-int oily_png_pixel_size(int color_mode);
+int oily_png_samples_per_pixel(int color_mode);
+
+/*
+  Returns the number of bits per pixel for a given color mode and bit depth.
+*/
+int oily_png_pixel_bitsize(int color_mode, int bit_depth);
+
+/*
+  Returns the number of bytes per pixel for a given color mode and bit depth.
+*/
+int oily_png_pixel_bytesize(int color_mode, int bit_depth);
+
+/*
+  Returns the number of bytes per scanline for a given width, color mode and bit depth.
+*/
+int oily_png_scanline_bytesize(int color_mode, int bit_depth, int width);
+
+/*
+  Returns the number of bytes in an image pass with the given properties.
+*/
+int oily_png_pass_bytesize(int color_mode, int bit_depth, int width, int height);
 
 #endif

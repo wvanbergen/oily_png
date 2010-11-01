@@ -4,6 +4,9 @@
 #define BUILD_PIXEL(r, g, b, a) (((PIXEL) r << 24) + ((PIXEL) g << 16) + ((PIXEL) b << 8) + (PIXEL) a)
 #define UNFILTER_BYTE(byte, adjustment)  byte = (BYTE) (((byte) + (adjustment)) & 0x000000ff)
 
+typedef PIXEL(*pixel_decoder_func)(BYTE*, int, int, VALUE);
+
+
 /*
   Decodes an image pass from the given byte stream at the given position.
   A normal PNG will only have one pass that consumes the entire stream, while an
@@ -11,6 +14,6 @@
   
   This function shouild replace ChunkyPNG::Canvas::PNGDecoding.decode_png_image_pass
 */
-VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALUE height, VALUE color_mode, VALUE start_pos);
+VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALUE height, VALUE color_mode, VALUE depth, VALUE start_pos);
 
 #endif
