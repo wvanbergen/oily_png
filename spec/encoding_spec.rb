@@ -5,7 +5,7 @@ describe OilyPNG::PNGEncoding do
   context 'encoding different color modes' do
     before do
       @canvas      = ChunkyPNG::Canvas.from_file(resource_file('gray.png'))
-      @oily_canvas = OilyCanvas.from_canvas(@canvas)
+      @oily_canvas = OilyPNG::Canvas.from_canvas(@canvas)
     end
     
     it "should encode an image using grayscale correctly" do
@@ -47,7 +47,7 @@ describe OilyPNG::PNGEncoding do
   context 'encoding different filters' do
     before do 
       @canvas      = ChunkyPNG::Canvas.from_file(resource_file('nonsquare.png'))
-      @oily_canvas = OilyCanvas.from_canvas(@canvas)
+      @oily_canvas = OilyPNG::Canvas.from_canvas(@canvas)
     end
     
     it "should encode correctly with no filtering" do
@@ -83,7 +83,7 @@ describe OilyPNG::PNGEncoding do
   
   it "should encode an interlaced image correctly" do
     canvas = ChunkyPNG::Canvas.from_file(resource_file('interlaced.png'))
-    data = OilyCanvas.from_canvas(canvas).to_blob(:interlace => true)
+    data = OilyPNG::Canvas.from_canvas(canvas).to_blob(:interlace => true)
     ds = ChunkyPNG::Datastream.from_blob(data)
     ds.header_chunk.interlace.should == ChunkyPNG::INTERLACING_ADAM7
     ChunkyPNG::Canvas.from_datastream(ds).should == canvas

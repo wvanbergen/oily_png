@@ -7,9 +7,12 @@ require 'rspec'
 require 'chunky_png'
 require 'oily_png/oily_png_ext'
 
-class OilyCanvas < ChunkyPNG::Canvas
-  extend OilyPNG::PNGDecoding
-  include OilyPNG::PNGEncoding
+
+module OilyPNG
+  class Canvas < ChunkyPNG::Canvas
+    extend OilyPNG::PNGDecoding
+    include OilyPNG::PNGEncoding
+  end
 end
 
 module ResourceHelper
@@ -19,6 +22,10 @@ module ResourceHelper
 end
 
 module CanvasHelper
+  
+  def resource_files(pattern = "*.png")
+    Dir[File.join(File.dirname(__FILE__), 'resources', pattern)]
+  end
   
   def resource_file(name)
     File.join(File.dirname(__FILE__), 'resources', name)
