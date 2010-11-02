@@ -11,9 +11,9 @@ void oily_png_decode_filter_sub(BYTE* bytes, long pos, long line_length, char pi
 
 // Decodes an UP filtered scanline at the given position in the byte array
 void oily_png_decode_filter_up(BYTE* bytes, long pos, long line_size, char pixel_size) {
+  UNUSED_PARAMETER(pixel_size);
   long i;
-  // The first line is not filtered because there is no privous line
-  if (pos >= line_size) {
+  if (pos >= line_size) { // The first line is not filtered because there is no privous line
     for (i = 1; i < line_size; i++) {
       UNFILTER_BYTE(bytes[pos + i], bytes[pos + i - line_size]);
     }
@@ -119,6 +119,7 @@ PIXEL oily_png_decode_pixel_indexed_1bit(BYTE* bytes, long start, long x, VALUE 
 
 
 PIXEL oily_png_decode_pixel_grayscale_8bit(BYTE* bytes, long start, long x, VALUE decoding_palette) {
+  UNUSED_PARAMETER(decoding_palette);
   return BUILD_PIXEL( bytes[start + 1 + x], 
                       bytes[start + 1 + x], 
                       bytes[start + 1 + x], 
@@ -126,6 +127,7 @@ PIXEL oily_png_decode_pixel_grayscale_8bit(BYTE* bytes, long start, long x, VALU
 }
 
 PIXEL oily_png_decode_pixel_grayscale_1bit(BYTE* bytes, long start, long x, VALUE decoding_palette) {
+  UNUSED_PARAMETER(decoding_palette);
   return BUILD_PIXEL( oily_png_resample_1bit_element(bytes, start, x), 
                       oily_png_resample_1bit_element(bytes, start, x), 
                       oily_png_resample_1bit_element(bytes, start, x), 
@@ -133,6 +135,7 @@ PIXEL oily_png_decode_pixel_grayscale_1bit(BYTE* bytes, long start, long x, VALU
 }
 
 PIXEL oily_png_decode_pixel_grayscale_2bit(BYTE* bytes, long start, long x, VALUE decoding_palette) {
+  UNUSED_PARAMETER(decoding_palette);
   return BUILD_PIXEL( oily_png_resample_2bit_element(bytes, start, x), 
                       oily_png_resample_2bit_element(bytes, start, x), 
                       oily_png_resample_2bit_element(bytes, start, x), 
@@ -140,6 +143,7 @@ PIXEL oily_png_decode_pixel_grayscale_2bit(BYTE* bytes, long start, long x, VALU
 }
 
 PIXEL oily_png_decode_pixel_grayscale_4bit(BYTE* bytes, long start, long x, VALUE decoding_palette) {
+  UNUSED_PARAMETER(decoding_palette);
   return BUILD_PIXEL( oily_png_resample_4bit_element(bytes, start, x), 
                       oily_png_resample_4bit_element(bytes, start, x), 
                       oily_png_resample_4bit_element(bytes, start, x), 
@@ -147,6 +151,7 @@ PIXEL oily_png_decode_pixel_grayscale_4bit(BYTE* bytes, long start, long x, VALU
 }
 
 PIXEL oily_png_decode_pixel_truecolor_8bit(BYTE* bytes, long start, long x, VALUE decoding_palette) {
+  UNUSED_PARAMETER(decoding_palette);
   return BUILD_PIXEL( bytes[start + 1 + (x * 3) + 0], 
                       bytes[start + 1 + (x * 3) + 1], 
                       bytes[start + 1 + (x * 3) + 2], 
@@ -154,6 +159,7 @@ PIXEL oily_png_decode_pixel_truecolor_8bit(BYTE* bytes, long start, long x, VALU
 }
 
 PIXEL oily_png_decode_pixel_grayscale_alpha_8bit(BYTE* bytes, long start, long x, VALUE decoding_palette) {
+  UNUSED_PARAMETER(decoding_palette);
   return BUILD_PIXEL( bytes[start + 1 + (x * 2) + 0], 
                       bytes[start + 1 + (x * 2) + 0], 
                       bytes[start + 1 + (x * 2) + 0], 
@@ -161,6 +167,7 @@ PIXEL oily_png_decode_pixel_grayscale_alpha_8bit(BYTE* bytes, long start, long x
 }
 
 PIXEL oily_png_decode_pixel_truecolor_alpha_8bit(BYTE* bytes, long start, long x, VALUE decoding_palette) {
+  UNUSED_PARAMETER(decoding_palette);
   return BUILD_PIXEL( bytes[start + 1 + (x * 4) + 0], 
                       bytes[start + 1 + (x * 4) + 1], 
                       bytes[start + 1 + (x * 4) + 2], 
@@ -168,6 +175,7 @@ PIXEL oily_png_decode_pixel_truecolor_alpha_8bit(BYTE* bytes, long start, long x
 }
 
 PIXEL oily_png_decode_pixel_grayscale_16bit(BYTE* bytes, long start, long x, VALUE decoding_palette) {
+  UNUSED_PARAMETER(decoding_palette);
   return BUILD_PIXEL( bytes[start + 1 + (x * 2)], 
                       bytes[start + 1 + (x * 2)], 
                       bytes[start + 1 + (x * 2)], 
@@ -175,6 +183,7 @@ PIXEL oily_png_decode_pixel_grayscale_16bit(BYTE* bytes, long start, long x, VAL
 }
 
 PIXEL oily_png_decode_pixel_truecolor_16bit(BYTE* bytes, long start, long x, VALUE decoding_palette) {
+  UNUSED_PARAMETER(decoding_palette);
   return BUILD_PIXEL( bytes[start + 1 + (x * 6) + 0], 
                       bytes[start + 1 + (x * 6) + 2], 
                       bytes[start + 1 + (x * 6) + 4], 
@@ -182,6 +191,7 @@ PIXEL oily_png_decode_pixel_truecolor_16bit(BYTE* bytes, long start, long x, VAL
 }
 
 PIXEL oily_png_decode_pixel_grayscale_alpha_16bit(BYTE* bytes, long start, long x, VALUE decoding_palette) {
+  UNUSED_PARAMETER(decoding_palette);
   return BUILD_PIXEL( bytes[start + 1 + (x * 4) + 0], 
                       bytes[start + 1 + (x * 4) + 0], 
                       bytes[start + 1 + (x * 4) + 0], 
@@ -189,6 +199,7 @@ PIXEL oily_png_decode_pixel_grayscale_alpha_16bit(BYTE* bytes, long start, long 
 }
 
 PIXEL oily_png_decode_pixel_truecolor_alpha_16bit(BYTE* bytes, long start, long x, VALUE decoding_palette) {
+  UNUSED_PARAMETER(decoding_palette);
   return BUILD_PIXEL( bytes[start + 1 + (x * 8) + 0], 
                       bytes[start + 1 + (x * 8) + 2], 
                       bytes[start + 1 + (x * 8) + 4], 

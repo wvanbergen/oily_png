@@ -21,6 +21,8 @@
 #define PIXEL unsigned int  // Pixels use 32 bits unsigned integers
 #define BYTE  unsigned char // Bytes use 8 bits unsigned integers
 
+#define UNUSED_PARAMETER(param) (void) param
+
 #include "png_decoding.h"
 #include "png_encoding.h"
 

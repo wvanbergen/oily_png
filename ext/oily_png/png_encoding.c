@@ -2,34 +2,38 @@
 
 ///// Pixel encoding functions //////////////////////////////////////////
 
-void oily_png_encode_pixel_grayscale(PIXEL pixel, BYTE* bytes, long pos, VALUE palette) {
-  // Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
-  // We'll uses the same to reomain compatible with ChunkyPNG.
+// Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
+// We'll uses the same to remain compatible with ChunkyPNG.
+void oily_png_encode_pixel_grayscale(PIXEL pixel, BYTE* bytes, long pos, VALUE encoding_palette) {
+  UNUSED_PARAMETER(encoding_palette);
   bytes[pos] = B_BYTE(pixel);
 }
 
-void oily_png_encode_pixel_grayscale_alpha(PIXEL pixel, BYTE* bytes, long pos, VALUE palette) {
-  // Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
-  // We'll uses the same to reomain compatible with ChunkyPNG.
+// Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
+// We'll uses the same to reomain compatible with ChunkyPNG.
+void oily_png_encode_pixel_grayscale_alpha(PIXEL pixel, BYTE* bytes, long pos, VALUE encoding_palette) {
+  UNUSED_PARAMETER(encoding_palette);
   bytes[pos + 0] = B_BYTE(pixel);
   bytes[pos + 1] = A_BYTE(pixel);
 }
 
-void oily_png_encode_pixel_truecolor(PIXEL pixel, BYTE* bytes, long pos, VALUE palette) {
+void oily_png_encode_pixel_truecolor(PIXEL pixel, BYTE* bytes, long pos, VALUE encoding_palette) {
+  UNUSED_PARAMETER(encoding_palette);
   bytes[pos + 0] = R_BYTE(pixel);
   bytes[pos + 1] = G_BYTE(pixel);
   bytes[pos + 2] = B_BYTE(pixel);
 }
 
-void oily_png_encode_pixel_truecolor_alpha(PIXEL pixel, BYTE* bytes, long pos, VALUE palette) {
+void oily_png_encode_pixel_truecolor_alpha(PIXEL pixel, BYTE* bytes, long pos, VALUE encoding_palette) {
+  UNUSED_PARAMETER(encoding_palette);  
   bytes[pos + 0] = R_BYTE(pixel);
   bytes[pos + 1] = G_BYTE(pixel);
   bytes[pos + 2] = B_BYTE(pixel);
   bytes[pos + 3] = A_BYTE(pixel);
 }
 
-void oily_png_encode_pixel_indexed(PIXEL pixel, BYTE* bytes, long pos, VALUE palette) {
-  bytes[pos] = (BYTE) NUM2UINT(rb_funcall(palette, rb_intern("index"), 1, UINT2NUM(pixel)));
+void oily_png_encode_pixel_indexed(PIXEL pixel, BYTE* bytes, long pos, VALUE encoding_palette) {
+  bytes[pos] = (BYTE) NUM2UINT(rb_funcall(encoding_palette, rb_intern("index"), 1, UINT2NUM(pixel)));
 }
 
 ///// Scanline filtering functions //////////////////////////////////////////
@@ -42,6 +46,8 @@ void oily_png_encode_filter_sub(BYTE* bytes, long pos, long line_size, char pixe
 }
 
 void oily_png_encode_filter_up(BYTE* bytes, long pos, long line_size, char pixel_size) {
+  UNUSED_PARAMETER(pixel_size);
+  
   long x;
   if (pos >= line_size) {
     for (x = line_size - 1; x > 0; x--) {
@@ -87,9 +93,9 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
   }
 
   // Get the encoding palette if we're encoding to an indexed bytestream.
-  VALUE palette = Qnil;
+  VALUE encoding_palette = Qnil;
   if (FIX2INT(color_mode) == OILY_PNG_COLOR_INDEXED) {
-    palette = rb_funcall(self, rb_intern("encoding_palette"), 0);
+    encoding_palette = rb_funcall(self, rb_intern("encoding_palette"), 0);
   }
   
   char pixel_size = oily_png_pixel_bytesize(FIX2INT(color_mode), depth);
@@ -119,7 +125,7 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
     for (x = 0; x < width; x++) {
       pixel = NUM2UINT(rb_ary_entry(pixels, y * width + x));
       pos   = (line_size * y) + (pixel_size * x) + 1;
-      pixel_encoder(pixel, bytes, pos, palette);
+      pixel_encoder(pixel, bytes, pos, encoding_palette);
     }
   }
   
