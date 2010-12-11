@@ -9,7 +9,7 @@ void Init_oily_png_ext() {
   
   // Setup encoding
   VALUE OilyPNG_PNGEncoding = rb_define_module_under(OilyPNG, "PNGEncoding");
-  rb_define_method(OilyPNG_PNGEncoding, "encode_png_image_pass_to_stream", oily_png_encode_png_image_pass_to_stream, 3);
+  rb_define_method(OilyPNG_PNGEncoding, "encode_png_image_pass_to_stream", oily_png_encode_png_image_pass_to_stream, 4);
 }
 
 char oily_png_samples_per_pixel(char color_mode) {

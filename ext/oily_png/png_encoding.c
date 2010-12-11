@@ -80,13 +80,15 @@ void oily_png_encode_filter_paeth(BYTE* bytes, long pos, long line_size, char pi
   }
 }
 
-VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE color_mode, VALUE filtering) {
+VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE color_mode, VALUE bit_depth, VALUE filtering) {
+  
+  UNUSED_PARAMETER(bit_depth);
   
   // Get the data
   char depth      = 8;
   long width      = FIX2LONG(rb_funcall(self, rb_intern("width"), 0));
   long height     = FIX2LONG(rb_funcall(self, rb_intern("height"), 0));
-  VALUE pixels   = rb_funcall(self, rb_intern("pixels"), 0);
+  VALUE pixels    = rb_funcall(self, rb_intern("pixels"), 0);
   
   if (RARRAY_LEN(pixels) != width * height) {
     rb_raise(rb_eRuntimeError, "The number of pixels does not match the canvas dimensions.");

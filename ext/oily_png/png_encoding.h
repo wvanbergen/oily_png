@@ -16,6 +16,6 @@
   
   This function should replace ChunkyPNG::Canvas::PNGEncoding.encode_png_image_pass_to_stream
 */
-VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE color_mode, VALUE filtering);
+VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE color_mode, VALUE bit_depth, VALUE filtering);
 
 #endif
