@@ -7,6 +7,9 @@
 #define A_BYTE(pixel)  ((BYTE) (((pixel) & (PIXEL) 0x000000ff)))
 
 #define FILTER_BYTE(byte, adjustment)  byte = (BYTE) (((byte) - (adjustment)) & 0x000000ff)
+#define ENCODING_PALETTE_INDEX(encoding_palette, pixels, width, y, x) ((x < width) ? ((BYTE) NUM2UINT(rb_funcall(encoding_palette, rb_intern("index"), 1, rb_ary_entry(pixels, y * width + x)))) : 0)
+
+typedef void(*scanline_encoder_func)(BYTE*, VALUE, long, long, VALUE);
 
 /*
   Encodes an image and append it to the stream.

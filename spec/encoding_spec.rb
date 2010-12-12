@@ -19,7 +19,7 @@ describe OilyPNG::PNGEncoding do
       @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE_ALPHA, 8, ChunkyPNG::FILTER_NONE)
       stream1.should == stream2
     end
-    
+
     it "should encode an image using truecolor correctly" do
       @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_TRUECOLOR, 8, ChunkyPNG::FILTER_NONE)
       @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_TRUECOLOR, 8, ChunkyPNG::FILTER_NONE)
@@ -31,15 +31,43 @@ describe OilyPNG::PNGEncoding do
       @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_TRUECOLOR_ALPHA, 8, ChunkyPNG::FILTER_NONE)
       stream1.should == stream2
     end
-    
-    it "should encode an image using indexed colors correctly" do
-      # Setup an encoding palette first
-      mock_palette = mock('palette', :index => 0xab)
-      @canvas.stub(:encoding_palette).and_return(mock_palette)
-      @oily_canvas.stub(:encoding_palette).and_return(mock_palette)
+
+  end
+  
+  context 'encoding with palette images' do
+    before do
+      @canvas      = ChunkyPNG::Canvas.from_file(resource_file('gray.png'))
+      @oily_canvas = OilyPNG::Canvas.from_canvas(@canvas)
       
+      @palette_mock = mock('Palette')
+      @palette_mock.stub(:index).with(an_instance_of(Fixnum)).and_return(0x01)
+      @palette_mock.stub(:index).with(nil).and_return(0)
+
+      @canvas.stub(:encoding_palette).and_return(@palette_mock)
+      @oily_canvas.stub(:encoding_palette).and_return(@palette_mock)
+    end
+    
+    it "should encode an image using 8-bit indexed colors correctly" do
       @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_INDEXED, 8, ChunkyPNG::FILTER_NONE)
       @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_INDEXED, 8, ChunkyPNG::FILTER_NONE)
+      stream1.should == stream2
+    end
+
+    it "should encode an image using 4-bit indexed colors correctly" do
+      @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_INDEXED, 4, ChunkyPNG::FILTER_NONE)
+      @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_INDEXED, 4, ChunkyPNG::FILTER_NONE)
+      stream1.should == stream2
+    end
+
+    it "should encode an image using 2-bit indexed colors correctly" do
+      @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_INDEXED, 2, ChunkyPNG::FILTER_NONE)
+      @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_INDEXED, 2, ChunkyPNG::FILTER_NONE)
+      stream1.should == stream2
+    end
+
+    it "should encode an image using 1-bit indexed colors correctly" do
+      @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_INDEXED, 1, ChunkyPNG::FILTER_NONE)
+      @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_INDEXED, 1, ChunkyPNG::FILTER_NONE)
       stream1.should == stream2
     end
   end
@@ -67,7 +95,7 @@ describe OilyPNG::PNGEncoding do
       @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_TRUECOLOR, 8, ChunkyPNG::FILTER_UP)
       stream1.should == stream2
     end
-
+    
     it "should encode correctly with average filtering" do
       @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_TRUECOLOR, 8, ChunkyPNG::FILTER_AVERAGE)
       @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_TRUECOLOR, 8, ChunkyPNG::FILTER_AVERAGE)
