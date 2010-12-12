@@ -1,4 +1,4 @@
-#include <oily_png_ext.h>
+#include "oily_png_ext.h"
 
 
 // Decodes a SUB filtered scanline at the given position in the byte array

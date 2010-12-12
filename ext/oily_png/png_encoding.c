@@ -1,4 +1,4 @@
-#include <oily_png_ext.h>
+#include "oily_png_ext.h"
 
 ///// Scanline filtering functions //////////////////////////////////////////
 

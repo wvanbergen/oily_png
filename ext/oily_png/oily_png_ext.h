@@ -23,8 +23,8 @@
 
 #define UNUSED_PARAMETER(param) (void) param
 
-#include <png_decoding.h>
-#include <png_encoding.h>
+#include "png_decoding.h"
+#include "png_encoding.h"
 
 
 /*
