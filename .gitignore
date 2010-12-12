@@ -2,6 +2,7 @@ Makefile
 /conftest.dSYM
 *.bundle
 *.o
+*.rbc
 /.bundle/
 /pkg
 oily_png-*.gem
