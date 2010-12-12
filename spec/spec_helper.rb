@@ -5,7 +5,7 @@ Bundler.setup
 
 require 'rspec'
 require 'chunky_png'
-require 'oily_png/oily_png_ext'
+require 'oily_png/oily_png'
 
 
 module OilyPNG

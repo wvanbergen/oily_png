@@ -1,6 +1,6 @@
 #include "oily_png_ext.h"
 
-void Init_oily_png_ext() {
+void Init_oily_png() {
   VALUE OilyPNG = rb_define_module("OilyPNG");
 
   // Setup decoding

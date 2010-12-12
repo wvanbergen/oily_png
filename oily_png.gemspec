@@ -22,7 +22,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('chunky_png', '~> 0.11')
 
   s.add_development_dependency('rake')
-  s.add_development_dependency('rspec', '~> 2.0')
+  s.add_development_dependency('rake-compiler')
+  s.add_development_dependency('rspec', '~> 2')
 
   s.rdoc_options << '--title' << s.name << '--main' << 'README.rdoc' << '--line-numbers' << '--inline-source'
   s.extra_rdoc_files = ['README.rdoc']

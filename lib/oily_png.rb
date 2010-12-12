@@ -11,7 +11,7 @@ module OilyPNG
 
 end
 
-require 'oily_png/oily_png_ext'
+require 'oily_png/oily_png'
 
 # Include mixin into ChunkyPNG
 ChunkyPNG.send(:include, OilyPNG)

@@ -23,8 +23,8 @@
 
 #define UNUSED_PARAMETER(param) (void) param
 
-#include "png_decoding.h"
-#include "png_encoding.h"
+#include <png_decoding.h>
+#include <png_encoding.h>
 
 
 /*
@@ -36,7 +36,7 @@
   speed up decoding, and include OilyPNG::PNGEncoding into the same class to speed
   up encoding. This is done in lib/oily_png.rb
 */
-void Init_oily_png_ext();
+void Init_oily_png();
 
 /*
   Returns the number of samples per pixel for a given color mode

@@ -10,16 +10,16 @@ GEM
     chunky_png (0.11.0)
     diff-lcs (1.1.2)
     rake (0.8.7)
-    rspec (2.0.0)
-      rspec-core (= 2.0.0)
-      rspec-expectations (= 2.0.0)
-      rspec-mocks (= 2.0.0)
-    rspec-core (2.0.0)
-    rspec-expectations (2.0.0)
-      diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.0)
-      rspec-core (= 2.0.0)
-      rspec-expectations (= 2.0.0)
+    rake-compiler (0.7.5)
+      rake
+    rspec (2.2.0)
+      rspec-core (~> 2.2)
+      rspec-expectations (~> 2.2)
+      rspec-mocks (~> 2.2)
+    rspec-core (2.2.1)
+    rspec-expectations (2.2.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.2.0)
 
 PLATFORMS
   ruby
@@ -28,4 +28,5 @@ DEPENDENCIES
   chunky_png (~> 0.11)
   oily_png!
   rake
-  rspec (~> 2.0)
+  rake-compiler
+  rspec (~> 2)
