@@ -1,8 +1,6 @@
 task(:verify, :png_file) do |task, args|
   require 'rubygems'
-  require 'bundler'
-  Bundler.setup
-
+  require 'bundler/setup'
   require 'chunky_png'
   require 'oily_png/oily_png_ext'
 

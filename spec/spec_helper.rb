@@ -1,9 +1,5 @@
 require 'rubygems'
-require 'bundler'
-
-Bundler.setup
-
-require 'rspec'
+require 'bundler/setup'
 require 'chunky_png'
 require 'oily_png/oily_png'
 

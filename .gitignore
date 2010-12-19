@@ -4,6 +4,7 @@ Makefile
 *.o
 *.rbc
 /.bundle/
+Gemfile.lock
 /pkg
 oily_png-*.gem
 .DS_Store
