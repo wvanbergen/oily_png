@@ -17,11 +17,11 @@
 #define OILY_PNG_FILTER_AVERAGE 3
 #define OILY_PNG_FILTER_PAETH   4
 
-// MACRO to surpress warnings about unused parameters.
+// Macro to surpress warnings about unused parameters.
 #define UNUSED_PARAMETER(param) (void) param
 
 // Type definitions
-typedef unsigned int PIXEL;  // Pixels use 32 bits unsigned integers
+typedef unsigned int PIXEL; // Pixels use 32 bits unsigned integers
 typedef unsigned char BYTE; // Bytes use 8 bits unsigned integers
 
 #include "png_decoding.h"
