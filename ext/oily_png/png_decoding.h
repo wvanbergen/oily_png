@@ -5,7 +5,7 @@
 #define UNFILTER_BYTE(byte, adjustment)  byte = (BYTE) (((byte) + (adjustment)) & 0x000000ff)
 
 typedef PIXEL(*pixel_decoder_func)(BYTE*, long, long, VALUE);
-
+typedef void(*scanline_decoder_func)(VALUE, BYTE*, long, long, VALUE);
 
 /*
   Decodes an image pass from the given byte stream at the given position.

@@ -72,7 +72,7 @@ void oily_png_encode_scanline_grayscale_alpha_8bit(BYTE* bytes, VALUE pixels, lo
 void oily_png_encode_scanline_indexed_8bit(BYTE* bytes, VALUE pixels, long y, long width, VALUE encoding_palette) {
   long x;
   for (x = 0; x < width; x++) {
-    bytes[x] = (BYTE) NUM2UINT(rb_funcall(encoding_palette, rb_intern("index"), 1, rb_ary_entry(pixels, y * width + x)));
+    bytes[x] = (BYTE) NUM2UINT(rb_hash_aref(encoding_palette, rb_ary_entry(pixels, y * width + x)));
   }
 }
 
@@ -192,7 +192,7 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
   // Get the encoding palette if we're encoding to an indexed bytestream.
   VALUE encoding_palette = Qnil;
   if (FIX2INT(color_mode) == OILY_PNG_COLOR_INDEXED) {
-    encoding_palette = rb_funcall(self, rb_intern("encoding_palette"), 0);
+    encoding_palette = rb_iv_get(rb_funcall(self, rb_intern("encoding_palette"), 0), "@encoding_map");
   }
   
   char pixel_size = oily_png_pixel_bytesize(FIX2INT(color_mode), depth);
