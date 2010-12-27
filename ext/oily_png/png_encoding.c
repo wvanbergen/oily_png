@@ -72,7 +72,7 @@ void oily_png_encode_scanline_grayscale_alpha_8bit(BYTE* bytes, VALUE pixels, lo
 void oily_png_encode_scanline_indexed_8bit(BYTE* bytes, VALUE pixels, long y, long width, VALUE encoding_palette) {
   long x;
   for (x = 0; x < width; x++) {
-    bytes[x] = (BYTE) NUM2UINT(rb_hash_aref(encoding_palette, rb_ary_entry(pixels, y * width + x)));
+    bytes[x] = ENCODING_PALETTE_INDEX(encoding_palette, pixels, width, y, x);
   }
 }
 
