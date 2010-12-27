@@ -117,172 +117,161 @@ BYTE oily_png_resample_4bit_element(BYTE* bytes, long start, long x) {
 
 void oily_png_decode_scanline_grayscale_1bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   UNUSED_PARAMETER(decoding_palette);
-  long x; PIXEL pixel;
+  long x;
   for (x = 0; x < width; x++) {
-    pixel = BUILD_PIXEL( oily_png_resample_1bit_element(bytes, start, x), 
-                         oily_png_resample_1bit_element(bytes, start, x), 
-                         oily_png_resample_1bit_element(bytes, start, x), 
-                         0xff);
-
-    rb_ary_push(pixels, UINT2NUM(pixel));
+    ADD_PIXEL_FROM_RGBA(pixels,
+                    oily_png_resample_1bit_element(bytes, start, x), 
+                    oily_png_resample_1bit_element(bytes, start, x), 
+                    oily_png_resample_1bit_element(bytes, start, x), 
+                    0xff);
   }
 }
 
 void oily_png_decode_scanline_grayscale_2bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   UNUSED_PARAMETER(decoding_palette);
-  long x; PIXEL pixel;
+  long x;
   for (x = 0; x < width; x++) {
-    pixel = BUILD_PIXEL( oily_png_resample_2bit_element(bytes, start, x), 
-                         oily_png_resample_2bit_element(bytes, start, x), 
-                         oily_png_resample_2bit_element(bytes, start, x), 
-                         0xff);
-
-    rb_ary_push(pixels, UINT2NUM(pixel));
+    ADD_PIXEL_FROM_RGBA(pixels,
+                    oily_png_resample_2bit_element(bytes, start, x), 
+                    oily_png_resample_2bit_element(bytes, start, x), 
+                    oily_png_resample_2bit_element(bytes, start, x), 
+                    0xff);
   }
 }
 
 void oily_png_decode_scanline_grayscale_4bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   UNUSED_PARAMETER(decoding_palette);
-  long x; PIXEL pixel;
+  long x;
   for (x = 0; x < width; x++) {
-    pixel = BUILD_PIXEL( oily_png_resample_4bit_element(bytes, start, x), 
-                         oily_png_resample_4bit_element(bytes, start, x), 
-                         oily_png_resample_4bit_element(bytes, start, x), 
-                         0xff);
-
-    rb_ary_push(pixels, UINT2NUM(pixel));
+    ADD_PIXEL_FROM_RGBA(pixels,
+                    oily_png_resample_4bit_element(bytes, start, x), 
+                    oily_png_resample_4bit_element(bytes, start, x), 
+                    oily_png_resample_4bit_element(bytes, start, x), 
+                    0xff);
   }
 }
 
 void oily_png_decode_scanline_grayscale_8bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   UNUSED_PARAMETER(decoding_palette);
-  long x; PIXEL pixel;
+  long x;
   for (x = 0; x < width; x++) {
-    pixel = BUILD_PIXEL( bytes[start + 1 + x], 
-                         bytes[start + 1 + x], 
-                         bytes[start + 1 + x], 
-                         0xff);
-
-    rb_ary_push(pixels, UINT2NUM(pixel));
+    ADD_PIXEL_FROM_RGBA(pixels,
+                    bytes[start + 1 + x], 
+                    bytes[start + 1 + x], 
+                    bytes[start + 1 + x], 
+                    0xff);
   }
 }
 
 void oily_png_decode_scanline_grayscale_16bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   UNUSED_PARAMETER(decoding_palette);
-  long x; PIXEL pixel;
+  long x;
   for (x = 0; x < width; x++) {
-    pixel = BUILD_PIXEL( bytes[start + 1 + (x * 2)], 
-                         bytes[start + 1 + (x * 2)], 
-                         bytes[start + 1 + (x * 2)], 
-                         0xff);
-
-    rb_ary_push(pixels, UINT2NUM(pixel));
+    ADD_PIXEL_FROM_RGBA(pixels,
+                    bytes[start + 1 + (x * 2)], 
+                    bytes[start + 1 + (x * 2)], 
+                    bytes[start + 1 + (x * 2)], 
+                    0xff);
   }
 }
 
 void oily_png_decode_scanline_grayscale_alpha_8bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   UNUSED_PARAMETER(decoding_palette);
-  long x; PIXEL pixel;
+  long x;
   for (x = 0; x < width; x++) {
-    pixel = BUILD_PIXEL( bytes[start + 1 + (x * 2) + 0], 
-                         bytes[start + 1 + (x * 2) + 0], 
-                         bytes[start + 1 + (x * 2) + 0], 
-                         bytes[start + 1 + (x * 2) + 1]);
-
-    rb_ary_push(pixels, UINT2NUM(pixel));
+    ADD_PIXEL_FROM_RGBA(pixels,
+                    bytes[start + 1 + (x * 2) + 0], 
+                    bytes[start + 1 + (x * 2) + 0], 
+                    bytes[start + 1 + (x * 2) + 0], 
+                    bytes[start + 1 + (x * 2) + 1]);
   }
 }
 
 void oily_png_decode_scanline_grayscale_alpha_16bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   UNUSED_PARAMETER(decoding_palette);
-  long x; PIXEL pixel;
+  long x;
   for (x = 0; x < width; x++) {
-    pixel = BUILD_PIXEL( bytes[start + 1 + (x * 4) + 0], 
-                         bytes[start + 1 + (x * 4) + 0], 
-                         bytes[start + 1 + (x * 4) + 0], 
-                         bytes[start + 1 + (x * 4) + 2]);
-
-    rb_ary_push(pixels, UINT2NUM(pixel));
+    ADD_PIXEL_FROM_RGBA(pixels,
+                    bytes[start + 1 + (x * 4) + 0], 
+                    bytes[start + 1 + (x * 4) + 0], 
+                    bytes[start + 1 + (x * 4) + 0], 
+                    bytes[start + 1 + (x * 4) + 2]);
   }
 }
 
 void oily_png_decode_scanline_indexed_1bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   long x;
   for (x = 0; x < width; x++) {
-    rb_ary_push(pixels, rb_ary_entry(decoding_palette, oily_png_extract_1bit_element(bytes, start, x)));
+    ADD_PIXEL_FROM_PALLETE(pixels, decoding_palette, oily_png_extract_1bit_element(bytes, start, x));
   }
 }
 
 void oily_png_decode_scanline_indexed_2bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   long x;
   for (x = 0; x < width; x++) {
-    rb_ary_push(pixels, rb_ary_entry(decoding_palette, oily_png_extract_2bit_element(bytes, start, x)));
+    ADD_PIXEL_FROM_PALLETE(pixels, decoding_palette, oily_png_extract_2bit_element(bytes, start, x));
   }
 }
 
 void oily_png_decode_scanline_indexed_4bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   long x;
   for (x = 0; x < width; x++) {
-    rb_ary_push(pixels, rb_ary_entry(decoding_palette, oily_png_extract_4bit_element(bytes, start, x)));
+    ADD_PIXEL_FROM_PALLETE(pixels, decoding_palette, oily_png_extract_4bit_element(bytes, start, x));
   }
 }
 
 void oily_png_decode_scanline_indexed_8bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   long x;
   for (x = 0; x < width; x++) {
-    rb_ary_push(pixels, rb_ary_entry(decoding_palette, bytes[start + 1 + x]));
+    ADD_PIXEL_FROM_PALLETE(pixels, decoding_palette, bytes[start + 1 + x]);
   }
 }
 
 void oily_png_decode_scanline_truecolor_8bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   UNUSED_PARAMETER(decoding_palette);
-  long x; PIXEL pixel;
+  long x;
   for (x = 0; x < width; x++) {
-    pixel = BUILD_PIXEL( bytes[start + 1 + (x * 3) + 0], 
-                         bytes[start + 1 + (x * 3) + 1], 
-                         bytes[start + 1 + (x * 3) + 2], 
-                         0xff);
-
-    rb_ary_push(pixels, UINT2NUM(pixel));
+    ADD_PIXEL_FROM_RGBA(pixels,
+                    bytes[start + 1 + (x * 3) + 0], 
+                    bytes[start + 1 + (x * 3) + 1], 
+                    bytes[start + 1 + (x * 3) + 2], 
+                    0xff);
   }
 }
 
 void oily_png_decode_scanline_truecolor_16bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   UNUSED_PARAMETER(decoding_palette);
-  long x; PIXEL pixel;
+  long x;
   for (x = 0; x < width; x++) {
-    pixel = BUILD_PIXEL( bytes[start + 1 + (x * 6) + 0], 
-                         bytes[start + 1 + (x * 6) + 2], 
-                         bytes[start + 1 + (x * 6) + 4], 
-                         0xff);
-
-    rb_ary_push(pixels, UINT2NUM(pixel));
+    ADD_PIXEL_FROM_RGBA(pixels,
+                    bytes[start + 1 + (x * 6) + 0], 
+                    bytes[start + 1 + (x * 6) + 2], 
+                    bytes[start + 1 + (x * 6) + 4], 
+                    0xff);
   }
 }
 
 void oily_png_decode_scanline_truecolor_alpha_8bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   UNUSED_PARAMETER(decoding_palette);
-  long x; PIXEL pixel;
+  long x;
   for (x = 0; x < width; x++) {
-    pixel = BUILD_PIXEL( bytes[start + 1 + (x * 4) + 0], 
-                         bytes[start + 1 + (x * 4) + 1], 
-                         bytes[start + 1 + (x * 4) + 2], 
-                         bytes[start + 1 + (x * 4) + 3]);
-
-    rb_ary_push(pixels, UINT2NUM(pixel));
+    ADD_PIXEL_FROM_RGBA(pixels,
+                    bytes[start + 1 + (x * 4) + 0], 
+                    bytes[start + 1 + (x * 4) + 1], 
+                    bytes[start + 1 + (x * 4) + 2], 
+                    bytes[start + 1 + (x * 4) + 3]);    
   }
 }
 
 void oily_png_decode_scanline_truecolor_alpha_16bit(VALUE pixels, BYTE* bytes, long start, long width, VALUE decoding_palette) {
   UNUSED_PARAMETER(decoding_palette);
-  long x; PIXEL pixel;
+  long x;
   for (x = 0; x < width; x++) {
-    pixel = BUILD_PIXEL( bytes[start + 1 + (x * 8) + 0], 
-                         bytes[start + 1 + (x * 8) + 2], 
-                         bytes[start + 1 + (x * 8) + 4], 
-                         bytes[start + 1 + (x * 8) + 6]);
-
-    rb_ary_push(pixels, UINT2NUM(pixel));
+    ADD_PIXEL_FROM_RGBA(pixels,    
+                    bytes[start + 1 + (x * 8) + 0], 
+                    bytes[start + 1 + (x * 8) + 2], 
+                    bytes[start + 1 + (x * 8) + 4], 
+                    bytes[start + 1 + (x * 8) + 6]);
   }
 }
 
@@ -336,6 +325,17 @@ scanline_decoder_func oily_png_decode_scanline_func(int color_mode, int bit_dept
 // DECODING AN IMAGE PASS
 /////////////////////////////////////////////////////////////////////
 
+VALUE oily_png_decode_palette(VALUE self) {
+  VALUE palette_instance = rb_funcall(self, rb_intern("decoding_palette"), 0);
+  if (palette_instance != Qnil) {
+    VALUE decoding_map = rb_iv_get(palette_instance, "@decoding_map");
+    if (rb_funcall(decoding_map, rb_intern("kind_of?"), 1, rb_cArray) == Qtrue) {  
+      return decoding_map;
+    }
+  }
+  rb_raise(rb_eRuntimeError, "Could not retrieve a decoding palette for this image!");  
+}
+
 
 VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALUE height, VALUE color_mode, VALUE depth, VALUE start_pos) {
   
@@ -360,8 +360,8 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
     // Get the decoding palette for indexed images.
     VALUE decoding_palette = Qnil;
     if (FIX2INT(color_mode) == OILY_PNG_COLOR_INDEXED) {
-      decoding_palette = rb_iv_get(rb_funcall(self, rb_intern("decoding_palette"), 0), "@decoding_map");
-    }
+      decoding_palette = oily_png_decode_palette(self);
+    }    
 
     // Select the scanline decoder function for this color mode and bit depth.
     void (*scanline_decoder)(VALUE, BYTE*, long, long, VALUE) = NULL;

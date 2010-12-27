@@ -175,6 +175,21 @@ scanline_encoder_func oily_png_encode_scanline_func(char color_mode, char bit_de
   }
 }
 
+/////////////////////////////////////////////////////////////////////
+// ENCODING AN IMAGE PASS
+/////////////////////////////////////////////////////////////////////
+
+VALUE oily_png_encode_palette(VALUE self) {
+  VALUE palette_instance = rb_funcall(self, rb_intern("encoding_palette"), 0);
+  if (palette_instance != Qnil) {
+    VALUE encoding_map = rb_iv_get(palette_instance, "@encoding_map");
+    if (rb_funcall(encoding_map, rb_intern("kind_of?"), 1, rb_cHash) == Qtrue) {
+      return encoding_map;
+    }
+  }
+  rb_raise(rb_eRuntimeError, "Could not retrieve a decoding palette for this image!");
+}
+
 VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE color_mode, VALUE bit_depth, VALUE filtering) {
   
   UNUSED_PARAMETER(bit_depth);
@@ -192,7 +207,7 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
   // Get the encoding palette if we're encoding to an indexed bytestream.
   VALUE encoding_palette = Qnil;
   if (FIX2INT(color_mode) == OILY_PNG_COLOR_INDEXED) {
-    encoding_palette = rb_iv_get(rb_funcall(self, rb_intern("encoding_palette"), 0), "@encoding_map");
+    encoding_palette = oily_png_encode_palette(self);
   }
   
   char pixel_size = oily_png_pixel_bytesize(FIX2INT(color_mode), depth);

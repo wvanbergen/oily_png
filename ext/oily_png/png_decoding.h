@@ -4,6 +4,16 @@
 #define BUILD_PIXEL(r, g, b, a) (((PIXEL) r << 24) + ((PIXEL) g << 16) + ((PIXEL) b << 8) + (PIXEL) a)
 #define UNFILTER_BYTE(byte, adjustment)  byte = (BYTE) (((byte) + (adjustment)) & 0x000000ff)
 
+#define ADD_PIXEL_FROM_PALLETE(pixels, decoding_palette, palette_entry) \
+    if (RARRAY_LEN(decoding_palette) > (palette_entry)) { \
+      rb_ary_push(pixels, rb_ary_entry(decoding_palette, (palette_entry))); \
+    } else { \
+      rb_raise(rb_eRuntimeError, "The decoding palette does not have %d entries!", (palette_entry)); \
+    }
+    
+#define ADD_PIXEL_FROM_RGBA(pixels, r, g, b, a) rb_ary_push(pixels, UINT2NUM(BUILD_PIXEL(r,g,b,a)));
+
+
 typedef PIXEL(*pixel_decoder_func)(BYTE*, long, long, VALUE);
 typedef void(*scanline_decoder_func)(VALUE, BYTE*, long, long, VALUE);
 
