@@ -218,8 +218,7 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
   BYTE* bytes = ALLOCA_N(BYTE, pass_size);
   
   // Get the scanline encoder function.
-  void (*scanline_encoder)(BYTE*, VALUE, long, long, VALUE) = NULL;
-  scanline_encoder = oily_png_encode_scanline_func(FIX2INT(color_mode), depth);
+  scanline_encoder_func scanline_encoder = oily_png_encode_scanline_func(FIX2INT(color_mode), depth);
   if (scanline_encoder == NULL) {
     rb_raise(rb_eRuntimeError, "No encoder for color mode %d and bit depth %d", FIX2INT(color_mode), depth);
   }

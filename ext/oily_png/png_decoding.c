@@ -364,9 +364,7 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
     }    
 
     // Select the scanline decoder function for this color mode and bit depth.
-    void (*scanline_decoder)(VALUE, BYTE*, long, long, VALUE) = NULL;
-    scanline_decoder = oily_png_decode_scanline_func(FIX2INT(color_mode), FIX2INT(depth));
-  
+    scanline_decoder_func scanline_decoder = oily_png_decode_scanline_func(FIX2INT(color_mode), FIX2INT(depth));
     if (scanline_decoder == NULL) {
       rb_raise(rb_eRuntimeError, "No decoder for color mode %d and bit depth %d", FIX2INT(color_mode), FIX2INT(depth));
     }
