@@ -6,4 +6,18 @@ infinity_test do
     environment.system('bundle install')
     environment.system('rake compile')
   end
+  
+  after(:each_ruby) do |environment|
+    environment.system("rake clean_and_clobber_without_verbose")
+  end
+  
+  heuristics do
+    add("^ext/*/(.*)\.c") do |file|
+      run :all => :tests
+    end
+    
+    add("^ext/*/(.*)\.h") do |file|
+      run :all => :tests
+    end
+  end
 end
