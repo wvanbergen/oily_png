@@ -47,7 +47,52 @@ void oily_png_encode_filter_paeth(BYTE* bytes, long pos, long line_size, char pi
 ///// Scanline encoding functions //////////////////////////////////////////
 
 // Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
-// We'll uses the same to reomain compatible with ChunkyPNG.
+// We'll uses the same to remain compatible with ChunkyPNG.
+void oily_png_encode_scanline_grayscale_1bit(BYTE* bytes, VALUE pixels, long y, long width, VALUE encoding_palette) {
+  UNUSED_PARAMETER(encoding_palette);
+  long x; BYTE p1, p2, p3, p4, p5, p6, p7, p8;
+  for (x = 0; x < width; x += 8) {
+    p1 = (x + 0 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 0))) >> 7);
+    p2 = (x + 1 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 1))) >> 7);
+    p3 = (x + 2 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 2))) >> 7);
+    p4 = (x + 3 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 3))) >> 7);
+    p5 = (x + 4 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 4))) >> 7);
+    p6 = (x + 5 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 5))) >> 7);
+    p7 = (x + 6 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 6))) >> 7);
+    p8 = (x + 7 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 7))) >> 7);
+    bytes[x >> 3] = (BYTE) ((p1 << 7) | (p2 << 6) | (p3 << 5) | (p4 << 4) | (p5 << 3) | (p6 << 2) | (p7 << 1) | (p8));
+  }
+}
+
+
+// Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
+// We'll uses the same to remain compatible with ChunkyPNG.
+void oily_png_encode_scanline_grayscale_2bit(BYTE* bytes, VALUE pixels, long y, long width, VALUE encoding_palette) {
+  UNUSED_PARAMETER(encoding_palette);
+  long x; BYTE p1, p2, p3, p4;
+  for (x = 0; x < width; x += 4) {
+    p1 = (x + 0 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 0))) >> 6);
+    p2 = (x + 1 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 1))) >> 6);
+    p3 = (x + 2 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 2))) >> 6);
+    p4 = (x + 3 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 3))) >> 6);
+    bytes[x >> 2] = (BYTE) ((p1 << 6) | (p2 << 4) | (p3 << 2) | (p4));
+  }
+}
+
+// Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
+// We'll uses the same to remain compatible with ChunkyPNG.
+void oily_png_encode_scanline_grayscale_4bit(BYTE* bytes, VALUE pixels, long y, long width, VALUE encoding_palette) {
+  UNUSED_PARAMETER(encoding_palette);
+  long x; BYTE p1, p2;
+  for (x = 0; x < width; x += 2) {
+    p1 = (x + 0 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 0))) >> 4);
+    p2 = (x + 1 >= width) ? 0 : (B_BYTE(NUM2UINT(rb_ary_entry(pixels, y * width + x + 1))) >> 4);
+    bytes[x >> 1] = (BYTE) ((p1 << 4) | (p2));
+  }
+}
+
+// Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
+// We'll uses the same to remain compatible with ChunkyPNG.
 void oily_png_encode_scanline_grayscale_8bit(BYTE* bytes, VALUE pixels, long y, long width, VALUE encoding_palette) {
   UNUSED_PARAMETER(encoding_palette);
   long x; PIXEL pixel;
@@ -58,7 +103,7 @@ void oily_png_encode_scanline_grayscale_8bit(BYTE* bytes, VALUE pixels, long y, 
 }
 
 // Assume R == G == B. ChunkyPNG uses the B byte fot performance reasons. 
-// We'll uses the same to reomain compatible with ChunkyPNG.
+// We'll uses the same to remain compatible with ChunkyPNG.
 void oily_png_encode_scanline_grayscale_alpha_8bit(BYTE* bytes, VALUE pixels, long y, long width, VALUE encoding_palette) {
   UNUSED_PARAMETER(encoding_palette);
   long x; PIXEL pixel;
@@ -141,6 +186,9 @@ scanline_encoder_func oily_png_encode_scanline_func(char color_mode, char bit_de
     case OILY_PNG_COLOR_GRAYSCALE:
       switch (bit_depth) {
         case 8:  return &oily_png_encode_scanline_grayscale_8bit;
+        case 4:  return &oily_png_encode_scanline_grayscale_4bit;
+        case 2:  return &oily_png_encode_scanline_grayscale_2bit;
+        case 1:  return &oily_png_encode_scanline_grayscale_1bit;
         default: return NULL;
       }
       

@@ -2,39 +2,56 @@ require 'spec_helper'
 
 describe OilyPNG::PNGEncoding do
 
-  context 'encoding different color modes' do
+  context 'encoding different color settings without palette' do
     before do
       @canvas      = ChunkyPNG::Canvas.from_file(resource_file('gray.png'))
       @oily_canvas = OilyPNG::Canvas.from_canvas(@canvas)
     end
     
-    it "should encode an image using grayscale correctly" do
-      @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE, 8, ChunkyPNG::FILTER_NONE)
+    it "should encode an image using 8-bit grayscale correctly" do
       @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE, 8, ChunkyPNG::FILTER_NONE)
+      @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE, 8, ChunkyPNG::FILTER_NONE)
       stream1.should == stream2
     end
     
-    it "should encode an image using grayscale alpha correctly" do
+    it "should encode an image using 4-bit grayscale correctly" do
+      @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE, 4, ChunkyPNG::FILTER_NONE)
+      @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE, 4, ChunkyPNG::FILTER_NONE)
+      stream1.should == stream2
+    end
+    
+    it "should encode an image using 2-bit grayscale correctly" do
+      @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE, 2, ChunkyPNG::FILTER_NONE)
+      @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE, 2, ChunkyPNG::FILTER_NONE)
+      stream1.should == stream2
+    end
+    
+    it "should encode an image using 1-bit grayscale correctly" do
+      @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE, 1, ChunkyPNG::FILTER_NONE)
+      @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE, 1, ChunkyPNG::FILTER_NONE)
+      stream1.should == stream2
+    end
+    
+    it "should encode an image using 8-bit grayscale alpha correctly" do
       @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE_ALPHA, 8, ChunkyPNG::FILTER_NONE)
       @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_GRAYSCALE_ALPHA, 8, ChunkyPNG::FILTER_NONE)
       stream1.should == stream2
     end
 
-    it "should encode an image using truecolor correctly" do
+    it "should encode an image using 8-bit truecolor correctly" do
       @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_TRUECOLOR, 8, ChunkyPNG::FILTER_NONE)
       @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_TRUECOLOR, 8, ChunkyPNG::FILTER_NONE)
       stream1.should == stream2
     end
     
-    it "should encode an image using truecolor alpha correctly" do
+    it "should encode an image using 8-bit truecolor alpha correctly" do
       @oily_canvas.send(:encode_png_image_pass_to_stream, stream1 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_TRUECOLOR_ALPHA, 8, ChunkyPNG::FILTER_NONE)
       @canvas.send(:encode_png_image_pass_to_stream,      stream2 = ChunkyPNG::Datastream.empty_bytearray, ChunkyPNG::COLOR_TRUECOLOR_ALPHA, 8, ChunkyPNG::FILTER_NONE)
       stream1.should == stream2
     end
-
   end
-  
-  context 'encoding with palette images' do
+
+  context 'encoding with paletted images using different bitrates' do
     before do
       @canvas      = ChunkyPNG::Canvas.from_file(resource_file('gray.png'))
       @oily_canvas = OilyPNG::Canvas.from_canvas(@canvas)
