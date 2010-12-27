@@ -39,12 +39,11 @@ describe OilyPNG::PNGEncoding do
       @canvas      = ChunkyPNG::Canvas.from_file(resource_file('gray.png'))
       @oily_canvas = OilyPNG::Canvas.from_canvas(@canvas)
       
-      @palette_mock = mock('Palette')
-      @palette_mock.stub(:index).with(an_instance_of(Fixnum)).and_return(0x01)
-      @palette_mock.stub(:index).with(nil).and_return(0)
-
-      @canvas.stub(:encoding_palette).and_return(@palette_mock)
-      @oily_canvas.stub(:encoding_palette).and_return(@palette_mock)
+      @canvas.encoding_palette = @canvas.palette
+      @canvas.encoding_palette.to_plte_chunk
+      
+      @oily_canvas.encoding_palette = @oily_canvas.palette
+      @oily_canvas.encoding_palette.to_plte_chunk
     end
     
     it "should encode an image using 8-bit indexed colors correctly" do
