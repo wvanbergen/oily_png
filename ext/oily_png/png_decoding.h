@@ -14,7 +14,6 @@
 #define ADD_PIXEL_FROM_RGBA(pixels, r, g, b, a) rb_ary_push(pixels, UINT2NUM(BUILD_PIXEL(r,g,b,a)));
 
 
-typedef PIXEL(*pixel_decoder_func)(BYTE*, long, long, VALUE);
 typedef void(*scanline_decoder_func)(VALUE, BYTE*, long, long, VALUE);
 
 /*
