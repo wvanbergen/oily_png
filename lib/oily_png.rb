@@ -8,7 +8,6 @@ module OilyPNG
     base::Canvas.send(:extend, OilyPNG::PNGDecoding)
     base::Canvas.send(:include, OilyPNG::PNGEncoding)
   end
-
 end
 
 require 'oily_png/oily_png'
