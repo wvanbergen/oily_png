@@ -263,7 +263,7 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
   long pass_size  = oily_png_pass_bytesize(FIX2INT(color_mode), depth, width, height);
 
   // Allocate memory for the byte array.
-  BYTE* bytes = ALLOCA_N(BYTE, pass_size);
+  BYTE* bytes = ALLOC_N(BYTE, pass_size);
   
   // Get the scanline encoder function.
   scanline_encoder_func scanline_encoder = oily_png_encode_scanline_func(FIX2INT(color_mode), depth);
@@ -297,5 +297,6 @@ VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE c
   
   // Append to encoded image pass to the output stream.
   rb_str_cat(stream, (char*) bytes, pass_size);
+  xfree(bytes);
   return Qnil;
 }
