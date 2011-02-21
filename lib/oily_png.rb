@@ -7,6 +7,8 @@ module OilyPNG
   def self.included(base)
     base::Canvas.send(:extend, OilyPNG::PNGDecoding)
     base::Canvas.send(:include, OilyPNG::PNGEncoding)
+
+    base::Color.send(:include, OilyPNG::Color)
   end
 end
 

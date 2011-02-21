@@ -6,4 +6,8 @@ module OilyPNG
     extend OilyPNG::PNGDecoding
     include OilyPNG::PNGEncoding
   end
+  
+  module Color
+    extend self
+  end
 end

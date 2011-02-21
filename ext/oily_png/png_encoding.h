@@ -1,10 +1,5 @@
-#ifndef PNG_ENCODING_H
-#define PNG_ENCODING_H
-
-#define R_BYTE(pixel)  ((BYTE) (((pixel) & (PIXEL) 0xff000000) >> 24))
-#define G_BYTE(pixel)  ((BYTE) (((pixel) & (PIXEL) 0x00ff0000) >> 16))
-#define B_BYTE(pixel)  ((BYTE) (((pixel) & (PIXEL) 0x0000ff00) >> 8))
-#define A_BYTE(pixel)  ((BYTE) (((pixel) & (PIXEL) 0x000000ff)))
+#ifndef OILY_PNG_PNG_ENCODING_H
+#define OILY_PNG_PNG_ENCODING_H
 
 #define FILTER_BYTE(byte, adjustment)  byte = (BYTE) (((byte) - (adjustment)) & 0x000000ff)
 #define ENCODING_PALETTE_INDEX(encoding_palette, pixels, width, y, x) (((x) < (width)) ? ((BYTE) NUM2UINT(rb_hash_aref(encoding_palette, rb_ary_entry(pixels, (y) * (width) + (x))))) : 0)

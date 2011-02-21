@@ -1,7 +1,6 @@
-#ifndef PNG_DECODING_H
-#define PNG_DECODING_H
+#ifndef OILY_PNG_PNG_DECODING_H
+#define OILY_PNG_PNG_DECODING_H
 
-#define BUILD_PIXEL(r, g, b, a) (((PIXEL) (r) << 24) + ((PIXEL) (g) << 16) + ((PIXEL) (b) << 8) + (PIXEL) (a))
 #define UNFILTER_BYTE(byte, adjustment)  byte = (BYTE) (((byte) + (adjustment)) & 0x000000ff)
 
 #define ADD_PIXEL_FROM_PALLETE(pixels, decoding_palette, palette_entry) \

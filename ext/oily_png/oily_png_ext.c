@@ -3,13 +3,17 @@
 void Init_oily_png() {
   VALUE OilyPNG = rb_define_module("OilyPNG");
 
-  // Setup decoding
+  // Setup decoding module
   VALUE OilyPNG_PNGDecoding = rb_define_module_under(OilyPNG, "PNGDecoding");
   rb_define_method(OilyPNG_PNGDecoding, "decode_png_image_pass", oily_png_decode_png_image_pass, 6);
   
-  // Setup encoding
+  // Setup encoding module
   VALUE OilyPNG_PNGEncoding = rb_define_module_under(OilyPNG, "PNGEncoding");
   rb_define_method(OilyPNG_PNGEncoding, "encode_png_image_pass_to_stream", oily_png_encode_png_image_pass_to_stream, 4);
+  
+  // Setup Color module
+  VALUE OilyPNG_Color = rb_define_module_under(OilyPNG, "Color");
+  rb_define_method(OilyPNG_Color, "compose_quick", oily_png_color_compose_quick, 2);
 }
 
 char oily_png_samples_per_pixel(char color_mode) {

@@ -1,5 +1,5 @@
-#ifndef OILY_PNG_EXT
-#define OILY_PNG_EXT
+#ifndef OILY_PNG_OILY_PNG_EXT
+#define OILY_PNG_OILY_PNG_EXT
 
 #include "ruby.h"
 
@@ -24,9 +24,10 @@
 typedef unsigned int PIXEL; // Pixels use 32 bits unsigned integers
 typedef unsigned char BYTE; // Bytes use 8 bits unsigned integers
 
+
 #include "png_decoding.h"
 #include "png_encoding.h"
-
+#include "color.h"
 
 /*
   Initialize the extension by creating the OilyPNG modules, and registering
