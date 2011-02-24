@@ -354,14 +354,14 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
 
     // Copy the bytes for this pass from the stream to a separate location
     // so we can work on this byte array directly.
-    BYTE* bytes = ALLOCA_N(BYTE, pass_size);
+    BYTE* bytes = ALLOC_N(BYTE, pass_size);
     memcpy(bytes, RSTRING_PTR(stream) + FIX2LONG(start_pos), pass_size);
 
     // Get the decoding palette for indexed images.
     VALUE decoding_palette = Qnil;
     if (FIX2INT(color_mode) == OILY_PNG_COLOR_INDEXED) {
       decoding_palette = oily_png_decode_palette(self);
-    }    
+    }
 
     // Select the scanline decoder function for this color mode and bit depth.
     scanline_decoder_func scanline_decoder = oily_png_decode_scanline_func(FIX2INT(color_mode), FIX2INT(depth));
@@ -387,8 +387,10 @@ VALUE oily_png_decode_png_image_pass(VALUE self, VALUE stream, VALUE width, VALU
       bytes[line_start] = OILY_PNG_FILTER_NONE;
       scanline_decoder(pixels, bytes, line_start, FIX2LONG(width), decoding_palette);
     }
+    
+    xfree(bytes);
   }
-  
+
   // Now, return a new ChunkyPNG::Canvas instance with the decoded pixels.
   return rb_funcall(self, rb_intern("new"), 3, width, height, pixels);
 }
