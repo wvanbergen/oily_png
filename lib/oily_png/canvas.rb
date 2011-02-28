@@ -5,6 +5,7 @@ module OilyPNG
   class Canvas < ChunkyPNG::Canvas
     extend OilyPNG::PNGDecoding
     include OilyPNG::PNGEncoding
+    include OilyPNG::Operations
   end
   
   module Color

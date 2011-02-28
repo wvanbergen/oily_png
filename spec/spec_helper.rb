@@ -28,6 +28,10 @@ module CanvasHelper
   def reference_canvas(name)
     ChunkyPNG::Canvas.from_file(resource_file("#{name}.png"))
   end
+  
+  def oily_reference_canvas(name)
+    OilyPNG::Canvas.from_file(resource_file("#{name}.png"))
+  end
 end
 
 RSpec.configure do |config|
