@@ -14,6 +14,11 @@ void Init_oily_png() {
   // Setup Color module
   VALUE OilyPNG_Color = rb_define_module_under(OilyPNG, "Color");
   rb_define_method(OilyPNG_Color, "compose_quick", oily_png_color_compose_quick, 2);
+  
+  // Setup Operations module
+  VALUE OilyPNG_Operations = rb_define_module_under(OilyPNG, "Operations");
+  rb_define_method(OilyPNG_Operations, "compose", oily_png_compose, -1);
+  rb_define_method(OilyPNG_Operations, "compose!", oily_png_compose_bang, -1);
 }
 
 char oily_png_samples_per_pixel(char color_mode) {

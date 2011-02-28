@@ -28,6 +28,7 @@ typedef unsigned char BYTE; // Bytes use 8 bits unsigned integers
 #include "png_decoding.h"
 #include "png_encoding.h"
 #include "color.h"
+#include "operations.h"
 
 /*
   Initialize the extension by creating the OilyPNG modules, and registering
