@@ -17,8 +17,8 @@ void Init_oily_png() {
   
   // Setup Operations module
   VALUE OilyPNG_Operations = rb_define_module_under(OilyPNG, "Operations");
-  rb_define_method(OilyPNG_Operations, "compose", oily_png_compose, -1);
   rb_define_method(OilyPNG_Operations, "compose!", oily_png_compose_bang, -1);
+  rb_define_method(OilyPNG_Operations, "replace!", oily_png_replace_bang, -1);
 }
 
 char oily_png_samples_per_pixel(char color_mode) {
