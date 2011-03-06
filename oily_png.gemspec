@@ -4,8 +4,8 @@ Gem::Specification.new do |s|
   
   # Do not change the version and date fields by hand. This will be done
   # automatically by the gem release script.
-  s.version = "1.0.0.rc2"
-  s.date    = "2011-03-02"
+  s.version = "1.0.0"
+  s.date    = "2011-03-06"
 
   s.summary     = "Native mixin to speed up ChunkyPNG"
   s.description = <<-EOT
