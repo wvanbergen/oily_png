@@ -3,6 +3,8 @@
 
 #include "ruby.h"
 
+#define RSTRING_NOT_MODIFIED
+
 // PNG color mode constants
 #define OILY_PNG_COLOR_GRAYSCALE        0
 #define OILY_PNG_COLOR_TRUECOLOR        2
