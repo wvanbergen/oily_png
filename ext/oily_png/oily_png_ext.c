@@ -3,6 +3,9 @@
 void Init_oily_png() {
   VALUE OilyPNG = rb_define_module("OilyPNG");
 
+  VALUE OilyPNG_Canvas = rb_define_module_under(OilyPNG, "Native");
+  rb_define_method(OilyPNG_Canvas, "steps", oily_png_canvas_steps, 2);
+
   // Setup decoding module
   VALUE OilyPNG_PNGDecoding = rb_define_module_under(OilyPNG, "PNGDecoding");
   rb_define_method(OilyPNG_PNGDecoding, "decode_png_image_pass", oily_png_decode_png_image_pass, 6);
