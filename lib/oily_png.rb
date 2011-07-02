@@ -9,10 +9,13 @@ module OilyPNG
     base::Canvas.send(:include, OilyPNG::PNGEncoding)
 
     base::Color.send(:include, OilyPNG::Color)
+    
+    base::Color.extend OilyPNG::Color
   end
 end
 
 require 'oily_png/oily_png'
+require 'oily_png/canvas'
 
 # Include mixin into ChunkyPNG
 ChunkyPNG.send(:include, OilyPNG)

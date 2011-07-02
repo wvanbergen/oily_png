@@ -9,6 +9,6 @@ module OilyPNG
   end
   
   module Color
-    extend self
+    extend OilyPNG::Color
   end
 end
