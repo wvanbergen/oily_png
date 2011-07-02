@@ -2,7 +2,7 @@
 #define OILY_PNG_OILY_PNG_EXT
 
 #include "ruby.h"
-#include "intern.h"
+#include "ruby/intern.h"
 
 #define RSTRING_NOT_MODIFIED
 

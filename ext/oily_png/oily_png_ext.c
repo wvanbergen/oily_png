@@ -4,7 +4,9 @@ void Init_oily_png() {
   VALUE OilyPNG = rb_define_module("OilyPNG");
 
   VALUE OilyPNG_Canvas = rb_define_module_under(OilyPNG, "Native");
+  rb_define_method(OilyPNG_Canvas, "steps_residues", oily_png_canvas_steps_residues, 2);
   rb_define_method(OilyPNG_Canvas, "steps", oily_png_canvas_steps, 2);
+  rb_define_method(OilyPNG_Canvas, "resample_nearest_neighbor!", oily_png_canvas_resample_nearest_neighbor_bang, 2);
 
   // Setup decoding module
   VALUE OilyPNG_PNGDecoding = rb_define_module_under(OilyPNG, "PNGDecoding");

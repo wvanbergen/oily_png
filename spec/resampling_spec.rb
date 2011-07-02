@@ -16,4 +16,24 @@ describe OilyPNG::Native do
       steps(11,5).should == image.steps(11,5)
     end
   end
+
+  describe '#resample_nearest_neighbor!' do
+    before(:all) { @reference = ChunkyPNG::Canvas.from_file(resource_file('nonsquare.png'))}
+
+    it "should resample [0,1,2,3] to 4x4 properly" do
+      OilyPNG::Canvas.new(2,2,[0,1,2,3]).resample(4,4).should == OilyPNG::Canvas.new(4,4,[0,0,1,1,0,0,1,1,2,2,3,3,2,2,3,3])
+    end
+
+    it "should resample [0,1,2,3] to 99x45 as ChunkyPNG does" do
+      ChunkyPNG::Canvas.new(2,2,[0,1,2,3]).resample(99,45).should == OilyPNG::Canvas.new(2,2,[0,1,2,3]).resample(99,45) 
+    end
+
+    it "should resample an image to 10x20 as ChunkyPNG does" do
+      @reference.resample(10,20).should == OilyPNG::Canvas.from_canvas(@reference).resample(10,20)
+    end
+    
+    it "should resample an image to 11x19 as ChunkyPNG does" do
+      @reference.resample(11,19).should == OilyPNG::Canvas.from_canvas(@reference).resample(11,19)
+    end
+  end
 end
