@@ -12,7 +12,7 @@ module OilyPNG
     base::Color.send(:include, OilyPNG::Color)
     
     base::Color.extend OilyPNG::Color
-    base::Canvas.send(:include, OilyPNG::Native)
+    base::Canvas.send(:include, OilyPNG::Resampling)
   end
 end
 
