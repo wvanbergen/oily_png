@@ -3,6 +3,11 @@
 void Init_oily_png() {
   VALUE OilyPNG = rb_define_module("OilyPNG");
 
+  VALUE OilyPNG_Canvas = rb_define_module_under(OilyPNG, "Native");
+  rb_define_method(OilyPNG_Canvas, "steps_residues", oily_png_canvas_steps_residues, 2);
+  rb_define_method(OilyPNG_Canvas, "steps", oily_png_canvas_steps, 2);
+  rb_define_method(OilyPNG_Canvas, "resample_nearest_neighbor!", oily_png_canvas_resample_nearest_neighbor_bang, 2);
+
   // Setup decoding module
   VALUE OilyPNG_PNGDecoding = rb_define_module_under(OilyPNG, "PNGDecoding");
   rb_define_method(OilyPNG_PNGDecoding, "decode_png_image_pass", oily_png_decode_png_image_pass, 6);
@@ -14,6 +19,10 @@ void Init_oily_png() {
   // Setup Color module
   VALUE OilyPNG_Color = rb_define_module_under(OilyPNG, "Color");
   rb_define_method(OilyPNG_Color, "compose_quick", oily_png_color_compose_quick, 2);
+  rb_define_method(OilyPNG_Color, "r", oily_png_color_r, 1);
+  rb_define_method(OilyPNG_Color, "g", oily_png_color_g, 1);
+  rb_define_method(OilyPNG_Color, "b", oily_png_color_b, 1);
+  rb_define_method(OilyPNG_Color, "a", oily_png_color_a, 1);
   
   // Setup Operations module
   VALUE OilyPNG_Operations = rb_define_module_under(OilyPNG, "Operations");

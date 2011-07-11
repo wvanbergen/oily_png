@@ -19,4 +19,10 @@ VALUE oily_png_color_compose_quick(VALUE self, VALUE fg_color, VALUE bg_color);
 /* Color composition using alpha transparency. */
 PIXEL oily_png_compose_color(PIXEL fg, PIXEL bg);
 
+/* Accessors */
+VALUE oily_png_color_r(VALUE self, VALUE pixel);
+VALUE oily_png_color_g(VALUE self, VALUE pixel);
+VALUE oily_png_color_b(VALUE self, VALUE pixel);
+VALUE oily_png_color_a(VALUE self, VALUE pixel);
+
 #endif

@@ -2,6 +2,7 @@
 #define OILY_PNG_OILY_PNG_EXT
 
 #include "ruby.h"
+#include "ruby/intern.h"
 
 #define RSTRING_NOT_MODIFIED
 
@@ -31,6 +32,7 @@ typedef unsigned char BYTE; // Bytes use 8 bits unsigned integers
 #include "png_encoding.h"
 #include "color.h"
 #include "operations.h"
+#include "resampling.h"
 
 /*
   Initialize the extension by creating the OilyPNG modules, and registering
