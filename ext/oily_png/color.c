@@ -17,25 +17,30 @@ PIXEL oily_png_compose_color(PIXEL fg, PIXEL bg) {
 }
 
 VALUE oily_png_color_compose_quick(VALUE self, VALUE fg_color, VALUE bg_color) {
+  UNUSED_PARAMETER(self);
   return UINT2NUM(oily_png_compose_color(NUM2UINT(fg_color), NUM2UINT(bg_color)));
 }
 
 VALUE oily_png_color_r(VALUE self, VALUE value) {
+  UNUSED_PARAMETER(self);  
   BYTE red = R_BYTE(NUM2UINT(value));
   return INT2FIX(red);
 }
 
 VALUE oily_png_color_g(VALUE self, VALUE value) {
+  UNUSED_PARAMETER(self);  
   BYTE green = G_BYTE(NUM2UINT(value));
   return INT2FIX(green);
 }
 
 VALUE oily_png_color_b(VALUE self, VALUE value) {
+  UNUSED_PARAMETER(self);  
   BYTE blue = B_BYTE(NUM2UINT(value));
   return INT2FIX(blue);
 }
 
 VALUE oily_png_color_a(VALUE self, VALUE value) {
+  UNUSED_PARAMETER(self);
   BYTE alpha = A_BYTE(NUM2UINT(value));
   return INT2FIX(alpha);
 }
