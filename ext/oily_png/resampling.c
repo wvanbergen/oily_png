@@ -44,6 +44,7 @@ void oily_png_generate_steps_residues(long width, long new_width, long *steps, l
 }
 
 VALUE oily_png_canvas_steps(VALUE self, VALUE v_width, VALUE v_new_width) {
+  UNUSED_PARAMETER(self);
   long width = NUM2LONG(v_width);
   long new_width = NUM2LONG(v_new_width);
 
@@ -70,6 +71,7 @@ VALUE oily_png_canvas_steps(VALUE self, VALUE v_width, VALUE v_new_width) {
 
 
 VALUE oily_png_canvas_steps_residues(VALUE self, VALUE v_width, VALUE v_new_width) {
+  UNUSED_PARAMETER(self);
   long width = NUM2LONG(v_width);
   long new_width = NUM2LONG(v_new_width);
 
