@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.extensions    = ["ext/oily_png/extconf.rb"]
   s.require_paths = ["lib", "ext"]
 
-  s.add_runtime_dependency('chunky_png', '~> 1')
+  s.add_runtime_dependency('chunky_png', '~> 1.2.1')
 
   s.add_development_dependency('rake')
   s.add_development_dependency('rake-compiler')
