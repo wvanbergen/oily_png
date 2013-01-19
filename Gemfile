@@ -1,4 +1,4 @@
-source :rubyforge
+source :rubygems
 
 if ENV['CHUNKY_PNG']
   gem 'chunky_png', :path => ENV['CHUNKY_PNG']
