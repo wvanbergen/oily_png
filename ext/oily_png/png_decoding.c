@@ -81,33 +81,11 @@ BYTE oily_png_resample_1bit_element(BYTE* bytes, long start, long x) {
 }
 
 BYTE oily_png_resample_2bit_element(BYTE* bytes, long start, long x) {
-  switch (oily_png_extract_2bit_element(bytes, start, x)) {
-    case 0x00: return 0x00;
-    case 0x01: return 0x55;
-    case 0x02: return 0xaa;
-    case 0x03: default: return 0xff;
-  }
+  return oily_png_extract_2bit_element(bytes, start, x) * 85;
 }
 
 BYTE oily_png_resample_4bit_element(BYTE* bytes, long start, long x) {
-  switch(oily_png_extract_4bit_element(bytes, start, x)) {
-    case 0x00: return 0;
-    case 0x01: return 17;
-    case 0x02: return 34;
-    case 0x03: return 51;
-    case 0x04: return 68;
-    case 0x05: return 85;
-    case 0x06: return 102;
-    case 0x07: return 119;
-    case 0x08: return 137;
-    case 0x09: return 154;
-    case 0x0a: return 171;
-    case 0x0b: return 188;
-    case 0x0c: return 205;
-    case 0x0d: return 222;
-    case 0x0e: return 239;
-    case 0x0f: default: return 255;
-  }
+  return oily_png_extract_4bit_element(bytes, start, x) * 17;
 }
 
 /////////////////////////////////////////////////////////////////////
