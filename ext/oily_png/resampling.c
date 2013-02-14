@@ -153,7 +153,6 @@ VALUE oily_png_canvas_resample_nearest_neighbor_bang(VALUE self, VALUE v_new_wid
 }
 
 VALUE oily_png_canvas_resample_bilinear_bang(VALUE self, VALUE v_new_width, VALUE v_new_height) {
-  printf("C bilinear\n");
   long new_width = NUM2LONG(v_new_width);
   long new_height = NUM2LONG(v_new_height);
 
