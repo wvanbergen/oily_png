@@ -173,9 +173,9 @@ VALUE oily_png_canvas_resample_bilinear_bang(VALUE self, VALUE v_new_width, VALU
   long index = 0;
   long x, y;
   long y1, y2, x1, x2;
-  long y_residue, x_residue;
-  long pixel_11, pixel_21, pixel_12, pixel_22;
-  long pixel_top, pixel_bot;
+  uint32_t y_residue, x_residue;
+  uint32_t pixel_11, pixel_21, pixel_12, pixel_22;
+  uint32_t pixel_top, pixel_bot;
   for (y = 0; y < new_height; y++) {
     y1 = index_y[y] < 0 ? 0 : index_y[y];
     y2 = y1+1 >= self_height ? self_height-1 : y1+1;
@@ -186,15 +186,15 @@ VALUE oily_png_canvas_resample_bilinear_bang(VALUE self, VALUE v_new_width, VALU
       x2 = x1+1 >= self_width ? self_height-1 : x1+1;
       x_residue = interp_x[x];
 
-      pixel_11 = NUM2LONG(rb_ary_entry(source, y1*self_width + x1));
-      pixel_21 = NUM2LONG(rb_ary_entry(source, y1*self_width + x2));
-      pixel_12 = NUM2LONG(rb_ary_entry(source, y2*self_width + x1));
-      pixel_22 = NUM2LONG(rb_ary_entry(source, y2*self_width + x2));
+      pixel_11 = NUM2UINT(rb_ary_entry(source, y1*self_width + x1));
+      pixel_21 = NUM2UINT(rb_ary_entry(source, y1*self_width + x2));
+      pixel_12 = NUM2UINT(rb_ary_entry(source, y2*self_width + x1));
+      pixel_22 = NUM2UINT(rb_ary_entry(source, y2*self_width + x2));
 
       pixel_top = oily_png_color_interpolate_quick(pixel_21, pixel_11, x_residue);
       pixel_bot = oily_png_color_interpolate_quick(pixel_22, pixel_12, x_residue);
 
-      rb_ary_store(pixels, index++, LONG2NUM(oily_png_color_interpolate_quick(pixel_bot, pixel_top, y_residue)));
+      rb_ary_store(pixels, index++, UINT2NUM(oily_png_color_interpolate_quick(pixel_bot, pixel_top, y_residue)));
     }
   }
 
