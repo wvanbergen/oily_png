@@ -25,15 +25,27 @@ describe OilyPNG::Resampling do
     end
 
     it "should resample [0,1,2,3] to 99x45 as ChunkyPNG does" do
-      ChunkyPNG::Canvas.new(2,2,[0,1,2,3]).resample_nearest_neighbor(99,45).should == OilyPNG::Canvas.new(2,2,[0,1,2,3]).resample_nearest_neighbor(99,45) 
+      ChunkyPNG::Canvas.new(2,2,[0,1,2,3]).resample_nearest_neighbor(99,45).should == OilyPNG::Canvas.new(2,2,[0,1,2,3]).resample_nearest_neighbor(99,45)
     end
 
     it "should resample an image to 10x20 as ChunkyPNG does" do
       @reference.resample_nearest_neighbor(10,20).should == OilyPNG::Canvas.from_canvas(@reference).resample_nearest_neighbor(10,20)
     end
-    
+
     it "should resample an image to 11x19 as ChunkyPNG does" do
       @reference.resample_nearest_neighbor(11,19).should == OilyPNG::Canvas.from_canvas(@reference).resample_nearest_neighbor(11,19)
+    end
+  end
+
+  describe '#resample_bilinear!' do
+    before(:all) { @reference = ChunkyPNG::Canvas.from_file(resource_file('nonsquare.png'))}
+
+    it "should resample an image to 10x20 as ChunkyPNG does" do
+      @reference.resample_bilinear(10,20).should == OilyPNG::Canvas.from_canvas(@reference).resample_bilinear(10,20)
+    end
+
+    it "should resample an image to 11x19 as ChunkyPNG does" do
+      @reference.resample_bilinear(11,19).should == OilyPNG::Canvas.from_canvas(@reference).resample_bilinear(11,19)
     end
   end
 end
