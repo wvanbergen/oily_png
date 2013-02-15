@@ -183,7 +183,7 @@ VALUE oily_png_canvas_resample_bilinear_bang(VALUE self, VALUE v_new_width, VALU
 
     for (x = 0; x < new_width; x++) {
       x1 = index_x[x] < 0 ? 0 : index_x[x];
-      x2 = x1+1 >= self_height ? self_height-1 : x1+1;
+      x2 = x1+1 >= self_width ? self_height-1 : x1+1;
       x_residue = interp_x[x];
 
       pixel_11 = NUM2LONG(rb_ary_entry(source, y1*self_width + x1));
