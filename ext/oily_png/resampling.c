@@ -173,9 +173,9 @@ VALUE oily_png_canvas_resample_bilinear_bang(VALUE self, VALUE v_new_width, VALU
   long index = 0;
   long x, y;
   long y1, y2, x1, x2;
-  uint32_t y_residue, x_residue;
-  uint32_t pixel_11, pixel_21, pixel_12, pixel_22;
-  uint32_t pixel_top, pixel_bot;
+  PIXEL y_residue, x_residue;
+  PIXEL pixel_11, pixel_21, pixel_12, pixel_22;
+  PIXEL pixel_top, pixel_bot;
   for (y = 0; y < new_height; y++) {
     y1 = index_y[y] < 0 ? 0 : index_y[y];
     y2 = y1+1 >= self_height ? self_height-1 : y1+1;

@@ -23,7 +23,7 @@
 #define UNUSED_PARAMETER(param) (void) param
 
 // Type definitions
-typedef unsigned int PIXEL; // Pixels use 32 bits unsigned integers
+typedef uint32_t PIXEL; // Pixels use 32 bits unsigned integers
 typedef unsigned char BYTE; // Bytes use 8 bits unsigned integers
 
 
