@@ -24,4 +24,3 @@ ChunkyPNG API.
 License: MIT (see LICENSE)
 
 This C module is written by Willem van Bergen with help from Dirkjan Bussink.
-
