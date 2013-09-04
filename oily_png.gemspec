@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
     This Ruby C extenstion defines a module that can be included into ChunkyPNG to improve its speed.
   EOT
 
+  s.license  = 'MIT'
   s.authors  = ['Willem van Bergen']
   s.email    = ['willem@railsdoctors.com']
   s.homepage = 'http://wiki.github.com/wvanbergen/oily_png'
