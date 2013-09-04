@@ -1,15 +1,18 @@
+require "bundler/gem_tasks"
+require "rspec/core/rake_task"
+require "rake/extensiontask"
+
 Dir['tasks/*.rake'].each { |file| load(file) }
 
-require 'rake/extensiontask'
-
-gem_management_tasks = GithubGem::RakeTasks.new(:gem)
-Rake::ExtensionTask.new('oily_png', gem_management_tasks.gemspec) do |ext|
+Rake::ExtensionTask.new('oily_png') do |ext|
   ext.lib_dir = File.join('lib', 'oily_png')
 end
 
+RSpec::Core::RakeTask.new(:spec) do |task|
+  task.pattern = "./spec/**/*_spec.rb"
+  task.rspec_opts = ['--color']
+end
+
 Rake::Task['spec'].prerequisites << :compile
-Rake::Task['spec:basic'].prerequisites << :compile
-Rake::Task['spec:rcov'].prerequisites << :compile
-Rake::Task['spec:specdoc'].prerequisites << :compile
 
 task :default => [:spec]
