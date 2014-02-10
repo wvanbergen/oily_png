@@ -7,7 +7,7 @@ require 'oily_png/version'
 Gem::Specification.new do |s|
   s.name = 'oily_png'
   s.rubyforge_project = s.name
-  
+
   # Do not change the version and date fields by hand. This will be done
   # automatically by the gem release script.
   s.version = OilyPNG::VERSION
@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.extensions    = ["ext/oily_png/extconf.rb"]
   s.require_paths = ["lib", "ext"]
 
-  s.add_runtime_dependency('chunky_png', '~> 1.2.7')
+  s.add_runtime_dependency('chunky_png', '~> 1.3.0')
 
   s.add_development_dependency('rake')
   s.add_development_dependency('rake-compiler')
