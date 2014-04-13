@@ -38,7 +38,9 @@ char oily_png_samples_per_pixel(char color_mode) {
     case OILY_PNG_COLOR_INDEXED:         return 1;
     case OILY_PNG_COLOR_GRAYSCALE_ALPHA: return 2;
     case OILY_PNG_COLOR_TRUECOLOR_ALPHA: return 4;
-    default: rb_raise(rb_eRuntimeError, "Unsupported color mode: %d", color_mode);
+    default: 
+      rb_raise(rb_eRuntimeError, "Unsupported color mode: %d", color_mode);
+      return 0;
   }
 }
 

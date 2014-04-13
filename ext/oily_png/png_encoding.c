@@ -236,6 +236,7 @@ VALUE oily_png_encode_palette(VALUE self) {
     }
   }
   rb_raise(rb_eRuntimeError, "Could not retrieve a decoding palette for this image!");
+  return Qnil;
 }
 
 VALUE oily_png_encode_png_image_pass_to_stream(VALUE self, VALUE stream, VALUE color_mode, VALUE bit_depth, VALUE filtering) {
