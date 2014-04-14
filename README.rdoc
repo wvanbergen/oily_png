@@ -1,4 +1,4 @@
-= OilyPNG
+= OilyPNG {<img src="https://travis-ci.org/wvanbergen/oily_png.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/wvanbergen/oily_png]
 
 OilyPNG is a Ruby C extension to speed up the pure Ruby ChunkyPNG library. It is a standalone
 module, so it does not require LibPNG, ImageMagick or any other library. Currently it has an 
