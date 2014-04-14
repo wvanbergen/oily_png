@@ -20,6 +20,7 @@ void Init_oily_png() {
   // Setup Color module
   VALUE OilyPNG_Color = rb_define_module_under(OilyPNG, "Color");
   rb_define_method(OilyPNG_Color, "compose_quick", oily_png_color_compose_quick, 2);
+  rb_define_method(OilyPNG_Color, "euclidean_distance_rgba", oily_png_euclidean_distance_rgba, 2);
   rb_define_method(OilyPNG_Color, "r", oily_png_color_r, 1);
   rb_define_method(OilyPNG_Color, "g", oily_png_color_g, 1);
   rb_define_method(OilyPNG_Color, "b", oily_png_color_b, 1);
@@ -38,7 +39,7 @@ char oily_png_samples_per_pixel(char color_mode) {
     case OILY_PNG_COLOR_INDEXED:         return 1;
     case OILY_PNG_COLOR_GRAYSCALE_ALPHA: return 2;
     case OILY_PNG_COLOR_TRUECOLOR_ALPHA: return 4;
-    default: 
+    default:
       rb_raise(rb_eRuntimeError, "Unsupported color mode: %d", color_mode);
       return 0;
   }

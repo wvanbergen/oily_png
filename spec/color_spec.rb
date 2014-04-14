@@ -33,4 +33,17 @@ describe OilyPNG::Color do
       compose_quick(fg, bg).should == ChunkyPNG::Color.compose_quick(fg, bg)
     end
   end
+
+  describe '#euclidean_distance_rgba' do
+    let(:color_a) { rand(0xffffffff) }
+    let(:color_b) { rand(0xffffffff) }
+    subject { euclidean_distance_rgba(color_a, color_b) }
+
+    it { should == ChunkyPNG::Color.euclidean_distance_rgba(color_a, color_b) }
+
+    context 'when both colors are the same' do
+      let(:color_b) { color_a }
+      it { should == 0 }
+    end
+  end
 end
