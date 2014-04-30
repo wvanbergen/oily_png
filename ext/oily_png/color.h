@@ -20,6 +20,9 @@ VALUE oily_png_color_compose_quick(VALUE self, VALUE fg_color, VALUE bg_color);
 PIXEL oily_png_compose_color(PIXEL fg, PIXEL bg);
 PIXEL oily_png_color_interpolate_quick(PIXEL fg, PIXEL bg, int alpha);
 
+/* Color comparison */
+VALUE oily_png_euclidean_distance_rgba(VALUE self, VALUE color_after, VALUE color_before);
+
 /* Accessors */
 VALUE oily_png_color_r(VALUE self, VALUE pixel);
 VALUE oily_png_color_g(VALUE self, VALUE pixel);

@@ -1,4 +1,5 @@
 #include "oily_png_ext.h"
+#include <math.h>
 
 PIXEL oily_png_compose_color(PIXEL fg, PIXEL bg) {
   BYTE a_com, new_r, new_g, new_b, new_a;
@@ -35,6 +36,15 @@ PIXEL oily_png_color_interpolate_quick(PIXEL fg, PIXEL bg, int alpha) {
 VALUE oily_png_color_compose_quick(VALUE self, VALUE fg_color, VALUE bg_color) {
   UNUSED_PARAMETER(self);
   return UINT2NUM(oily_png_compose_color(NUM2UINT(fg_color), NUM2UINT(bg_color)));
+}
+
+VALUE oily_png_euclidean_distance_rgba(VALUE self, VALUE color_after, VALUE color_before) {
+  UNUSED_PARAMETER(self);
+
+  return rb_float_new(sqrt(pow((R_BYTE(NUM2UINT(color_after)) - R_BYTE(NUM2UINT(color_before))), 2) +
+                           pow((G_BYTE(NUM2UINT(color_after)) - G_BYTE(NUM2UINT(color_before))), 2) +
+                           pow((B_BYTE(NUM2UINT(color_after)) - B_BYTE(NUM2UINT(color_before))), 2) +
+                           pow((A_BYTE(NUM2UINT(color_after)) - A_BYTE(NUM2UINT(color_before))), 2)));
 }
 
 VALUE oily_png_color_r(VALUE self, VALUE value) {
