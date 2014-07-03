@@ -48,6 +48,10 @@ describe OilyPNG::Resampling do
       @reference.resample_bilinear(11,19).should == OilyPNG::Canvas.from_canvas(@reference).resample_bilinear(11,19)
     end
 
+    it "should upsample an image to 88x44 as ChunkyPNG does" do
+      @reference.resample_bilinear(88,44).should == OilyPNG::Canvas.from_canvas(@reference).resample_bilinear(88,44)
+    end
+
     it "should not crash upsampling tall image" do
       @reference = ChunkyPNG::Canvas.from_file(resource_file('nonsquaretall.png'))
       expect { OilyPNG::Canvas.from_canvas(@reference).resample_bilinear(44,88) }.to_not raise_error
