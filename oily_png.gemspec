@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency('rake')
   s.add_development_dependency('rake-compiler')
-  s.add_development_dependency('rspec', '~> 2')
+  s.add_development_dependency('rspec', '~> 3')
 
   s.rdoc_options << '--title' << s.name << '--main' << 'README.rdoc' << '--line-numbers' << '--inline-source'
   s.extra_rdoc_files = ['README.rdoc']
