@@ -39,11 +39,11 @@ describe OilyPNG::Color do
     let(:color_b) { rand(0xffffffff) }
     subject { euclidean_distance_rgba(color_a, color_b) }
 
-    it { should == ChunkyPNG::Color.euclidean_distance_rgba(color_a, color_b) }
+    it { is_expected.to be(ChunkyPNG::Color.euclidean_distance_rgba(color_a, color_b)) }
 
     context 'when both colors are the same' do
       let(:color_b) { color_a }
-      it { should == 0 }
+      it { is_expected.to eq(0) }
     end
   end
 end
