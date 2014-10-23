@@ -10,6 +10,7 @@ module OilyPNG
     
     base::Color.extend OilyPNG::Color
     base::Canvas.send(:include, OilyPNG::Resampling)
+    base::Canvas.send(:include, OilyPNG::Operations)
   end
 end
 
