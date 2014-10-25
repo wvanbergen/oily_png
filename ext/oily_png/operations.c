@@ -120,3 +120,41 @@ VALUE oily_png_replace_bang(int argc, VALUE *argv, VALUE self) {
   }
   return self;
 }
+
+VALUE oily_png_rotate_left_bang(VALUE self){
+  int store_at;
+  VALUE pixel_value;
+  int canvas_width = NUM2INT(rb_funcall(self, rb_intern("width"), 0));
+  int canvas_height = NUM2INT(rb_funcall(self, rb_intern("height"), 0));
+  VALUE original_pixels = rb_funcall(self, rb_intern("pixels"), 0);
+  VALUE new_pixels = rb_ary_dup(original_pixels);
+  int i, j;
+  for( j = 0 ; j < canvas_width; j++ ){
+    for( i = 0 ; i < canvas_height; i++ ){
+      store_at = (canvas_width - 1 - j)*canvas_height + i;
+      pixel_value = rb_ary_entry(original_pixels, i*canvas_width + j);
+      rb_ary_store(new_pixels, store_at, pixel_value );
+    }
+  }
+  rb_funcall(self, rb_intern("replace_canvas!"), 3, INT2NUM(canvas_height), INT2NUM(canvas_width), new_pixels);
+  return self;
+}
+
+VALUE oily_png_rotate_right_bang(VALUE self){
+  int store_at;
+  VALUE pixel_value;
+  int canvas_width = NUM2INT(rb_funcall(self, rb_intern("width"), 0));
+  int canvas_height = NUM2INT(rb_funcall(self, rb_intern("height"), 0));
+  VALUE original_pixels = rb_funcall(self, rb_intern("pixels"), 0);
+  VALUE new_pixels = rb_ary_dup(original_pixels);
+  int i, j;
+  for( j = 0; j < canvas_width; j++ ){
+    for( i = 0; i < canvas_height; i++ ){
+      store_at = j * canvas_height + (canvas_height - i - 1);
+      pixel_value = rb_ary_entry(original_pixels, i*canvas_width + j);
+      rb_ary_store(new_pixels, store_at, pixel_value );
+    }
+  }
+  rb_funcall(self, rb_intern("replace_canvas!"), 3, INT2NUM(canvas_height), INT2NUM(canvas_width), new_pixels);
+  return self;
+}

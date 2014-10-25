@@ -33,4 +33,15 @@ VALUE oily_png_compose_bang(int argc, VALUE *argv, VALUE c);
 */
 VALUE oily_png_replace_bang(int argc, VALUE *argv, VALUE c);
 
+
+/*
+  C replacement method for rotating the image 90 degrees counter-clockwise.
+*/
+VALUE oily_png_rotate_left_bang(VALUE self);
+
+/*
+  C replacement method for rotating the image 90 degrees clockwise.
+*/
+VALUE oily_png_rotate_right_bang(VALUE self);
+
 #endif
