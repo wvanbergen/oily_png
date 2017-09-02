@@ -19,7 +19,7 @@
 #define OILY_PNG_FILTER_AVERAGE 3
 #define OILY_PNG_FILTER_PAETH   4
 
-// Macro to surpress warnings about unused parameters.
+// Macro to suppress warnings about unused parameters.
 #define UNUSED_PARAMETER(param) (void) param
 
 // Type definitions
