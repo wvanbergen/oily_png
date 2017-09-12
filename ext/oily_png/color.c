@@ -41,6 +41,8 @@ VALUE oily_png_color_compose_quick(VALUE self, VALUE fg_color, VALUE bg_color) {
 VALUE oily_png_euclidean_distance_rgba(VALUE self, VALUE color_after, VALUE color_before) {
   UNUSED_PARAMETER(self);
 
+  if (color_after == color_before) return rb_float_new(0.0);
+
   return rb_float_new(sqrt(pow((R_BYTE(NUM2UINT(color_after)) - R_BYTE(NUM2UINT(color_before))), 2) +
                            pow((G_BYTE(NUM2UINT(color_after)) - G_BYTE(NUM2UINT(color_before))), 2) +
                            pow((B_BYTE(NUM2UINT(color_after)) - B_BYTE(NUM2UINT(color_before))), 2) +
