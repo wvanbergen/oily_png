@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.license  = 'MIT'
   s.authors  = ['Willem van Bergen']
   s.email    = ['willem@railsdoctors.com']
-  s.homepage = 'http://wiki.github.com/wvanbergen/oily_png'
+  s.homepage = 'https://github.com/wvanbergen/oily_png'
 
   s.extensions    = ["ext/oily_png/extconf.rb"]
   s.require_paths = ["lib", "ext"]
